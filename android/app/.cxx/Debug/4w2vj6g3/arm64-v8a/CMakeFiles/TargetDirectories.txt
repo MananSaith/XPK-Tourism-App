@@ -1,0 +1,2 @@
+C:/Users/MananSaith/StudioProjects/fateh manan FYP 2021-2025/code/xpk/android/app/.cxx/Debug/4w2vj6g3/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/MananSaith/StudioProjects/fateh manan FYP 2021-2025/code/xpk/android/app/.cxx/Debug/4w2vj6g3/arm64-v8a/CMakeFiles/rebuild_cache.dir

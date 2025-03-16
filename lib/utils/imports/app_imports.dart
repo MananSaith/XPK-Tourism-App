@@ -35,9 +35,14 @@ export 'package:dio/dio.dart';
 export 'package:xpk/widegts/toast/app_toast.dart';
 export 'package:xpk/widegts/custom_dialog_box.dart/dailog_box.dart';
 export 'package:firebase_auth/firebase_auth.dart';
-
+export 'package:xpk/config/binding_routing/app_bindings.dart';
 export 'package:xpk/widegts/app_text_field/custum_text_field.dart';
 export 'package:xpk/widegts/toast/snackbar_custom.dart';
+export 'package:cloud_firestore/cloud_firestore.dart';
+export 'package:firebase_storage/firebase_storage.dart';
+export 'package:firebase_core/firebase_core.dart';
+export 'package:xpk/firebase_options.dart';
+
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%% scren exports %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 export 'package:xpk/app_module/auth/views/forgetpasswordscreen.dart';

@@ -1,11 +1,10 @@
-// // import '../../utils/app_imports/app_imports.dart';
+import 'package:get/get.dart';
+import 'package:xpk/utils/imports/app_imports.dart';
 
-// class AuthBinding extends Bindings {
-//   @override
-//   void dependencies() {
-//     // Get.lazyPut<AuthController>(
-//     //   () => AuthController(),
-//     // );
-//   }
-// }
-
+class AuthBinding extends Bindings {
+  @override
+  void dependencies() {
+    debugPrint('========================= AuthBinding');
+    Get.put<AuthController>(AuthController());
+  }
+}

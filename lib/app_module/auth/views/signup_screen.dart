@@ -5,7 +5,7 @@ import 'package:xpk/utils/imports/app_imports.dart';
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  UserSignupDataController controller = Get.find<UserSignupDataController>();
+  AuthController controller = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,9 +78,8 @@ class SignupScreen extends StatelessWidget {
                                     radius: 60,
                                     backgroundColor: AppColors.gray100,
                                     backgroundImage: controller
-                                            .imagePath.value.isNotEmpty
-                                        ? FileImage(
-                                            File(controller.imagePath.value))
+                                            .image.path.isNotEmpty
+                                        ? FileImage(File(controller.image.path))
                                         : AssetImage(
                                             AppImages.defultProfile,
                                           )),
@@ -130,7 +129,7 @@ class SignupScreen extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                           borderColor: Colors.white,
                           borderRadius: 50,
-                          validator:controller.validatePassword,
+                          validator: controller.validatePassword,
                           trailingIcon: IconButton(
                             icon: Icon(
                               controller.isPasswordVisible.value
@@ -157,8 +156,9 @@ class SignupScreen extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                           borderColor: Colors.white,
                           borderRadius: 50,
-                          validator: (value) =>controller.validateConfirmPassword(
-                              value, controller.newPassword.value),
+                          validator: (value) =>
+                              controller.validateConfirmPassword(
+                                  value, controller.newPassword.value),
                           trailingIcon: IconButton(
                             icon: Icon(
                               controller.isPasswordConfirmVisible.value
@@ -233,31 +233,59 @@ class SignupScreen extends StatelessWidget {
                       SizedBox(
                         height: screenHeight * 0.025,
                       ),
-                      Material(
-                        color: Colors.transparent,
-                        child: CustomElevatedButton(
-                          borderRadius: 50,
-                          text: MyText.login,
-                          fontSize: Responsive.fontSize(context, 18),
-                          gradient: AppColors.buttonGradian,
-                          onPressed: () {
-                            if (_formKey.currentState!.validate() &&
-                                controller.birthday.value.isNotEmpty &&
-                                controller.imagePath.value.isNotEmpty) {
-                              Get.toNamed(AppRoutes.signupEmailOtp);
-                            } else {
-                              showCustomSnackBar(
-                                title: 'Failed',
-                                message: 'Select image profile & Birthday',
-                                backgroundColor: AppColors.primaryButton,
-                                textColor: Colors.white,
-                                icon: Icons.error,
+                      Obx(() {
+                        return controller.check.value
+                            ? customLoader(AppColors.primaryAppBar)
+                            : Material(
+                                color: Colors.transparent,
+                                child: CustomElevatedButton(
+                                  borderRadius: 50,
+                                  text: MyText.signUp,
+                                  fontSize: Responsive.fontSize(context, 18),
+                                  gradient: AppColors.buttonGradian,
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate() &&
+                                        controller.birthday.value.isNotEmpty &&
+                                        controller.image.path.isNotEmpty) {
+                                      showCustomDialog(
+                                        title: MyText.resetPassword,
+                                        content: controller.email.value +
+                                            " " +
+                                            MyText.verifyEmailContent,
+                                        actions: [
+                                          CustomElevatedButton(
+                                            text: "ok",
+                                            onPressed: () {
+                                              Get.offAllNamed(AppRoutes.login);
+                                            },
+                                            height: 35.h,
+                                            width: 70.w,
+                                            borderRadius: 50,
+                                            fontSize: Responsive.fontSize(
+                                                context, 12.sp),
+                                            // gradient: AppColors.buttonGradian,
+                                            backgroundColor:
+                                                AppColors.secondaryButton,
+                                          ),
+                                        ],
+                                      );
+                                       Get.toNamed(AppRoutes.login);
+                                    } else {
+                                      showCustomSnackBar(
+                                        title: 'Failed',
+                                        message:
+                                            'Select image profile & Birthday',
+                                        backgroundColor:
+                                            AppColors.primaryButton,
+                                        textColor: Colors.white,
+                                        icon: Icons.error,
+                                      );
+                                    }
+                                    // Get.toNamed(Routes.signup);
+                                  },
+                                ),
                               );
-                            }
-                            // Get.toNamed(Routes.signup);
-                          },
-                        ),
-                      ),
+                      }),
                       SizedBox(
                         height: screenHeight * 0.045,
                       ),
@@ -291,14 +319,4 @@ class SignupScreen extends StatelessWidget {
       ),
     );
   }
-
-
-
-
-
-
-
-
-
-
 }

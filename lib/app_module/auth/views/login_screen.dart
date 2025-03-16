@@ -4,8 +4,7 @@ import 'package:xpk/utils/imports/app_imports.dart';
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  final UserSignupDataController controller =
-      Get.put(UserSignupDataController());
+  final AuthController controller = Get.find();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   RxBool isPasswordVisible = false.obs;
   RxBool isRememberMe = false.obs;
@@ -64,8 +63,7 @@ class LoginScreen extends StatelessWidget {
                         borderColor: Colors.white,
                         borderRadius: 50,
                         validator: controller.validateEmail,
-                        onChanged: (value) =>
-                                      controller.userName.value = value,
+                        onChanged: (value) => controller.userName.value = value,
                       ),
                       SizedBox(
                         height: screenHeight * 0.025,
@@ -96,24 +94,27 @@ class LoginScreen extends StatelessWidget {
                       }),
                       Row(
                         children: [
-                          Obx(() {
-                            return Checkbox(
-                              value: isRememberMe.value,
-                              onChanged: (value) {
-                                isRememberMe.value = value!;
-                              },
-                              activeColor: AppColors.primaryButton,
-                              splashRadius: 30,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                            );
-                          }),
-                          TextWidget(
-                            text: MyText.remember,
-                            fSize: 16,
-                            textColor: AppColors.whiteBar,
-                          ),
+                          // Obx(() {
+                          //   return Checkbox(
+                          //     value: isRememberMe.value,
+                          //     onChanged: (value) {
+                          //       isRememberMe.value = value!;
+                          //     },
+                          //     activeColor: AppColors.primaryButton,
+                          //     splashRadius: 30,
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(7),
+                          //     ),
+                          //   );
+                          // }),
+                          // InkWell(
+                          //   //onTap: ,
+                          //   child: TextWidget(
+                          //     text: MyText.termAndCondition,
+                          //     fSize: 16,
+                          //     textColor: AppColors.warning,
+                          //   ),
+                          // ),
                           Spacer(),
                           InkWell(
                             onTap: () {
@@ -139,35 +140,8 @@ class LoginScreen extends StatelessWidget {
                           gradient: AppColors.buttonGradian,
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              if (isRememberMe.value) {
-                                showCustomSnackBar(
-                                  title: 'Login',
-                                  message: 'Login Successfully and Remember Me',
-                                  backgroundColor: AppColors.primaryButton,
-                                  textColor: Colors.white,
-                                  icon: Icons.check,
-                                );
-                              } else {
-                                showCustomSnackBar(
-                                  title: 'Login',
-                                  message: 'check box not checked',
-                                  backgroundColor: AppColors.primaryButton,
-                                  textColor: Colors.white,
-                                  icon: Icons.check,
-                                );
-                              }
-
-                              // Get.toNamed(Routes.home);
-                            } else {
-                              showCustomSnackBar(
-                                title: 'Login',
-                                message: 'Login Failed',
-                                backgroundColor: AppColors.primaryButton,
-                                textColor: Colors.white,
-                                icon: Icons.error,
-                              );
+                              controller.login();
                             }
-                            // Get.toNamed(Routes.signup);
                           },
                         ),
                       ),

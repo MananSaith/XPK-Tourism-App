@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: MyText.appName,
+         // initialBinding: AuthBinding(), // Bind controllers
           theme: ThemeData(
             primaryColor: AppColors.primaryAppBar,
             scaffoldBackgroundColor: AppColors.scaffoldBackground,

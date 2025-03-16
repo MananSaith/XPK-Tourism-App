@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:xpk/utils/constant/app_image_constant.dart';
 
 void showCustomDialog({
   String? title,
@@ -27,7 +28,10 @@ void showCustomDialog({
           children: [
             Row(
               children: [
-                if (topLeftWidget != null) topLeftWidget,
+                topLeftWidget != null? topLeftWidget:Image.asset(
+                                  AppImages.logo,
+                                  width: 50,
+                                ),
                 if (title != null) ...[
                   if (topLeftWidget != null) const SizedBox(width: 10),
                   Expanded(

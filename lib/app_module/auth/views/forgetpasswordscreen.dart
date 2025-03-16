@@ -4,7 +4,7 @@ import 'package:xpk/utils/imports/app_imports.dart';
 // ignore: must_be_immutable
 class ForgetPasswordScreen extends StatelessWidget {
   ForgetPasswordScreen({super.key});
-  UserSignupDataController controller = Get.find<UserSignupDataController>();
+  AuthController controller = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +74,8 @@ class ForgetPasswordScreen extends StatelessWidget {
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               showCustomDialog(
-                                backgroundColor: AppColors.white,
-                                topLeftWidget: Image.asset(
-                                  AppImages.logo,
-                                  width: 50,
-                                ),
+                             
+                             
                                 title: MyText.resetPassword,
                                 content: controller.email.value +
                                     " " +

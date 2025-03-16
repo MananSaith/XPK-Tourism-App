@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 
-class UserSignupDataController extends GetxController {
+class AuthController extends GetxController {
   RxString newPassword = "".obs;
   RxString userName = "".obs;
   RxString birthday = "Birthday".obs;
@@ -10,19 +10,17 @@ class UserSignupDataController extends GetxController {
   RxBool isPasswordVisible = false.obs;
   RxBool isPasswordConfirmVisible = false.obs;
   RxBool isRememberMe = false.obs;
-  var imagePath = "".obs;
-  Rxn<Uint8List> byte = Rxn<Uint8List>();
-
-
-
-
-  
+  late File image;
+  var profileImageUrl = ''.obs;
+  //Rxn<Uint8List> byte = Rxn<Uint8List>();
 
   //%%%%%%%%%%%%%%%%%%%%%%%%%%% firebse functions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   final FirebaseAuth _auth = FirebaseAuth.instance;
-var check = false.obs;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  var check = false.obs;
 
- void login() async {
+  void login() async {
     check(true);
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -32,32 +30,128 @@ var check = false.obs;
 
       // Check if email is verified
       User? user = userCredential.user;
-      if (user != null && user.emailVerified) {
+      if (user != null) {
+        if (user.emailVerified) {
+          check(false);
+          Get.offAllNamed(AppRoutes.home);
+        } else {
+          check(false);
+          showCustomDialog(
+            title: MyText.resetPassword,
+            content: email.value + " " + MyText.sendEmailVerifyFromLogin,
+            actions: [
+              CustomElevatedButton(
+                text: "ok",
+                onPressed: () {
+                  Get.offAllNamed(AppRoutes.login);
+                },
+                height: 35.h,
+                width: 70.w,
+                borderRadius: 50,
+                fontSize: 12.sp,
+                backgroundColor: AppColors.secondaryButton,
+              ),
+            ],
+          );
+        }
+
         check(false);
-       // Get.offNamed(Routes.home);
       } else {
         check(false);
         await _auth.signOut(); // Sign out the user if not verified
         Get.offAllNamed(AppRoutes.login);
-        Get.snackbar("Error", "Email not verified. Please verify your email.");
+        Get.snackbar("Error", "Invalid email or password.");
       }
     } catch (e) {
       check(false);
       Get.snackbar("Error", e.toString());
+      debugPrint(e.toString());
     }
   }
 
+  void signup() async {
+    check(true);
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email.value,
+        password: newPassword.value,
+      );
+      await userCredential.user?.sendEmailVerification();
+      User user = userCredential.user!;
+      await UploadImage();
+      _saveUserToFirestore(user);
+      check(false);
+    } catch (e) {
+      check(false);
+      Get.snackbar("Error", e.toString());
+    }
+    check(false);
+  }
 
+  void checkEmailVerification() async {
+    User? user = _auth.currentUser;
+    await user?.reload();
+    if (user != null && user.emailVerified) {
+      // Get.offAllNamed(Routes.home);
+    } else {
+      Get.snackbar("Error", "Email not verified yet.");
+    }
+  }
 
+  void _saveUserToFirestore(User user) async {
+    await _firestore.collection('users').doc(user.uid).set({
+      'username': userName.value,
+      'email': user.email,
+      "password": newPassword.value,
+      "birthday": birthday.value,
+      "gender": selectedGender.value,
+      "profileImageUrl": profileImageUrl.value,
+      "uid": user.uid,
+      "createdAt": FieldValue.serverTimestamp(),
+    });
+  }
 
+  Future<void> UploadImage() async {
+    String fileName =
+        'users/${userName.value}-${_auth.currentUser!.uid}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    Reference ref = _storage.ref().child(fileName);
 
+    try {
+      File imageFile = File(image.path);
+      await ref.putFile(imageFile);
+      String downloadUrl = await ref.getDownloadURL();
+      profileImageUrl.value = downloadUrl;
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    }
+  }
 
+  void resetPassword() async {
+    if (email.value.isEmpty) {
+      Get.snackbar("Error", "Please enter your email address.");
+      return;
+    }
 
+    try {
+      await _auth.sendPasswordResetEmail(email: email.value);
+      Get.snackbar(
+        "Success",
+        "Password reset email sent. Please check your inbox.",
+      );
+      Get.offAllNamed(AppRoutes.login);
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    }
+  }
 
-
-
-
-
+  bool isLoggedIn() {
+    final user = _auth.currentUser;
+    if (user != null) {
+      return user.emailVerified; // Ensure email is verified
+    }
+    return false;
+  }
 
   //%%%%%%%%%%%%%%%%%%%% supportive functions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -69,13 +163,7 @@ var check = false.obs;
   Future<void> pickImage() async {
     PlatformFile? image = await FilePickerHelper.pickImage();
     if (image != null) {
-      // Read the file bytes manually if image.bytes is null
-      if (image.bytes == null && image.path != null) {
-        byte.value = await File(image.path!).readAsBytes();
-      } else {
-        byte.value = image.bytes;
-      }
-      imagePath.value = image.path!;
+      image = image;
     }
   }
 
@@ -91,11 +179,11 @@ var check = false.obs;
     if (!regExp.hasMatch(value)) {
       return 'Enter a valid email';
     }
-   
+
     return null;
   }
 
-    String? validateConfirmPassword(String? value, String? password) {
+  String? validateConfirmPassword(String? value, String? password) {
     if (value == null || value.isEmpty) {
       return 'Please confirm your password';
     } else if (value != password) {
@@ -104,9 +192,7 @@ var check = false.obs;
     return null; // Return null if the passwords match
   }
 
-
-
-    String? validatePassword(String? value) {
+  String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
       return 'Password cannot be empty';
     } else if (value.length < 8) {
@@ -119,7 +205,7 @@ var check = false.obs;
     return null; // Return null if the input is valid
   }
 
-   Widget genderContainer(String text) {
+  Widget genderContainer(String text) {
     return Obx(() {
       return CustomContainer(
         child: TextWidget(
@@ -142,7 +228,7 @@ var check = false.obs;
     });
   }
 
-    String? validUserName(
+  String? validUserName(
     String? value,
   ) {
     if (value == null || value.isEmpty) {
@@ -153,7 +239,7 @@ var check = false.obs;
     return null; // Return null if the passwords match
   }
 
-    Future<void> selectBirthday(BuildContext context) async {
+  Future<void> selectBirthday(BuildContext context) async {
     DateTime today = DateTime.now();
     DateTime twelveYearsAgo = DateTime(today.year - 12, today.month, today.day);
 

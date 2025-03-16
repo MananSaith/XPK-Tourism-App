@@ -10,9 +10,12 @@ class SplashScreen extends StatelessWidget {
     RxDouble opacity = 0.0.obs;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+
     Future.delayed(const Duration(seconds: 3), () {
-      Get.offNamed(AppRoutes.getStart);
+      final isLoggedIn = Get.find<AuthController>().isLoggedIn();
+      Get.offAllNamed(isLoggedIn ? AppRoutes.home : AppRoutes.getStart);
     });
+
     Future.delayed(const Duration(seconds: 1), () {
       opacity.value = 1.0;
     });

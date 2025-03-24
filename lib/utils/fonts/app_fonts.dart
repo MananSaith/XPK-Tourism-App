@@ -15,9 +15,5 @@ class Weights {
   static String regular = 'regular';
   static String thin = 'thin';
   static String bold = 'bold';
-  // static String londrinaLight = 'LondrinaSolidLight';
-  //
-  // static String londrinaRegular = 'LondrinaSolid';
-  // static String londrinaThin = 'LondrinaSolidThin';
-  // static String londrinaBold = 'LondrinaSolidBlack';
+
 }

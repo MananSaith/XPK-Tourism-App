@@ -1,16 +1,19 @@
-export  'package:flutter/material.dart';
+export 'package:flutter/material.dart';
 export 'package:google_fonts/google_fonts.dart';
 export 'package:xpk/utils/app_color/app_color.dart';
 export 'package:xpk/utils/fonts/app_dimensions.dart';
 export 'package:flutter/services.dart';
-export 'package:xpk/widegts/helper_function/helper_function.dart';
 export 'package:xpk/widegts/loader/app_loader.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:xpk/utils/constant/app_image_constant.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:xpk/config/binding_routing/app_pages.dart';
 export 'package:xpk/utils/constant/string_constant.dart';
-export 'package:xpk/utils/fonts/app_fonts.dart';
+export 'package:xpk/app_module/home_screen/controller/home_controller.dart';
+export 'package:xpk/config/server/maps_services.dart';
+export 'package:xpk/app_module/home_screen/widgets/search_buttom_sheet.dart';
+export 'package:xpk/app_module/home_screen/widgets/place_card.dart';
+
 export 'package:fluttertoast/fluttertoast.dart';
 export 'package:xpk/utils/padding/app_borader_radius.dart';
 export 'package:xpk/widegts/app_text/app_text.dart';
@@ -18,13 +21,13 @@ export 'package:xpk/widegts/custom_size_box_widget/custom_sized_box.dart';
 export 'dart:io';
 export 'package:image_picker/image_picker.dart';
 export 'dart:math';
+export 'package:xpk/utils/fonts/app_fonts.dart';
 export 'package:xpk/utils/padding/app_paddings.dart';
 export 'package:xpk/utils/constant/api_constant.dart';
 export 'package:file_picker/file_picker.dart';
 export 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 export 'package:xpk/widegts/file_picker/file_picker.dart';
 export 'package:xpk/config/binding_routing/app_routes.dart';
-export 'package:xpk/utils/font_weight/font_weight.dart';
 export 'package:xpk/utils/responsive/responsive.dart';
 export 'package:xpk/widegts/animation/animation.dart';
 export 'package:xpk/widegts/app_button/custum_button.dart';
@@ -42,7 +45,7 @@ export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:firebase_storage/firebase_storage.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:xpk/firebase_options.dart';
-
+export 'package:xpk/app_module/new_blog_screen/widgets/input_section.dart';
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%% scren exports %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 export 'package:xpk/app_module/auth/views/forgetpasswordscreen.dart';
@@ -51,3 +54,11 @@ export 'package:xpk/app_module/auth/views/login_screen.dart';
 export 'package:xpk/app_module/auth/views/signup_email_otp.dart';
 export 'package:xpk/app_module/auth/views/signup_screen.dart';
 export 'package:xpk/app_module/splash/splash_screen.dart';
+export 'package:xpk/app_module/bottom_navigation/navbar_item.dart';
+export 'package:xpk/app_module/saved_screen/saved_screen.dart';
+export 'package:xpk/app_module/new_blog_screen/new_blog_screen.dart';
+export 'package:xpk/app_module/profile_screen/profile_screen.dart';
+export 'package:xpk/app_module/new_blog_screen/widgets/image_upload_section.dart';
+
+export 'package:xpk/app_module/bottom_navigation/navigation_screen.dart';
+export 'package:xpk/app_module/home_screen/view/home_screen.dart';

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
-//import '/utils/app_imports/app_imports.dart';
 
 class AppPages {
   AppPages._();
@@ -20,5 +19,7 @@ class AppPages {
     GetPage(
         name: AppRoutes.forgetPasswordScreen,
         page: () => ForgetPasswordScreen()),
+    GetPage(name: AppRoutes.home, page: () => HomeScreen()),
+    GetPage(name: AppRoutes.navigateScreen, page: () => NavigationScreen()),
   ];
 }

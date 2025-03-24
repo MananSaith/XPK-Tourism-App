@@ -31,9 +31,7 @@ class AppCacheImageView extends StatelessWidget {
         height: height,
         width: width,
         fit: boxFit, //isProfile ? BoxFit.cover : BoxFit.contain,
-        imageUrl: imageUrl.contains('http')
-            ? imageUrl
-            : HelperFunctions.getImageUrl(imageUrl),
+        imageUrl: imageUrl,
         // imageUrl: imageUrl,
         progressIndicatorBuilder: (context, url, downloadProgress) => Center(
           child: Container(
@@ -81,9 +79,7 @@ class AppProfileCacheImageView extends StatelessWidget {
 
         width: width,
         fit: BoxFit.cover,
-        imageUrl: imageUrl.contains('http')
-            ? imageUrl
-            : HelperFunctions.getImageUrl(imageUrl),
+        imageUrl: imageUrl,
         // imageUrl: imageUrl,
         progressIndicatorBuilder: (context, url, downloadProgress) => Center(
           child: Container(

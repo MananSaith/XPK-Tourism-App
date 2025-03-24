@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
-import 'package:xpk/utils/font_weight/font_weight.dart';
 import 'package:xpk/utils/constant/string_constant.dart';
+import 'package:xpk/utils/fonts/app_fonts.dart';
 import 'package:xpk/utils/responsive/responsive.dart';
 import 'package:xpk/widegts/app_text/textwidget.dart';
 
@@ -72,7 +72,7 @@ class SignupEmailOtp extends StatelessWidget {
                   TextWidget(
                     text: MyText.codeEnter,
                     fSize: Responsive.fontSize(context, 25),
-                    fWeight: MyFontWeight.extra,
+                    fWeight: FontWeights.extraBold,
                   ),
                   SizedBox(
                     height: screenHeight * 0.025,
@@ -80,7 +80,7 @@ class SignupEmailOtp extends StatelessWidget {
                   TextWidget(
                     text: "${MyText.codeEmail} mrmanan143@gmail.com",
                     fSize: Responsive.fontSize(context, 16),
-                    fWeight: MyFontWeight.regular,
+                    fWeight: FontWeights.regular,
                   ),
                   SizedBox(height: 20),
                   OtpTextField(

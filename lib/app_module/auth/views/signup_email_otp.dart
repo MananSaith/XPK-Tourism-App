@@ -64,7 +64,7 @@ class SignupEmailOtp extends StatelessWidget {
                   TextWidget(
                     text: MyText.codeEnter,
                     fSize: Responsive.fontSize(context, 25),
-                    fWeight: MyFontWeight.extra,
+                    fWeight: FontWeights.extraBold,
                   ),
                   SizedBox(
                     height: screenHeight * 0.025,
@@ -72,7 +72,7 @@ class SignupEmailOtp extends StatelessWidget {
                   TextWidget(
                     text: "${MyText.codeEmail} mrmanan143@gmail.com",
                     fSize: Responsive.fontSize(context, 16),
-                    fWeight: MyFontWeight.regular,
+                    fWeight: FontWeights.regular,
                   ),
                   SizedBox(height: 20),
                   OtpTextField(

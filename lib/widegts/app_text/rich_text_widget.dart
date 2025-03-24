@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:xpk/utils/app_color/app_color.dart';
-import '../../utils/font_weight/font_weight.dart';
+import 'package:xpk/utils/fonts/app_fonts.dart';
 
 // ignore: must_be_immutable
 class RichTextWidget extends StatelessWidget {
   final List<TextSpan> textSpans; // List of TextSpan for rich text
   double fSize;
-  FontWeight? fWeight = MyFontWeight.regular;
+  FontWeight? fWeight = FontWeights.regular;
   Color? textColor = AppColors.jetBlack;
   final int? maxLine;
   final bool overFlow;

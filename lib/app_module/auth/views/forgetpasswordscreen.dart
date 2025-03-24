@@ -51,7 +51,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                         style: TextStyle(
                           color: AppColors.jetBlack,
                           fontSize: screenWidth * 0.06,
-                          fontWeight: MyFontWeight.bold,
+                          fontWeight: FontWeights.bold,
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.03),
@@ -64,7 +64,10 @@ class ForgetPasswordScreen extends StatelessWidget {
                         onChanged: (value) => controller.email.value = value,
                       ),
                       SizedBox(height: screenHeight * 0.03),
-                      Material(
+                      Obx(
+                        () => controller.check.value
+                            ? customLoader(AppColors.primaryAppBar)
+                            : Material(
                         color: Colors.transparent,
                         child: CustomElevatedButton(
                           borderRadius: 50,
@@ -103,6 +106,8 @@ class ForgetPasswordScreen extends StatelessWidget {
                           },
                         ),
                       ),
+                      ),
+                      
                     ],
                   ),
                 ),

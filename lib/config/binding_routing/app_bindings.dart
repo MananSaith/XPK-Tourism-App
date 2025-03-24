@@ -6,5 +6,7 @@ class AuthBinding extends Bindings {
   void dependencies() {
     debugPrint('========================= AuthBinding');
     Get.put<AuthController>(AuthController());
+    Get.put<HomeController>(HomeController());
+
   }
 }

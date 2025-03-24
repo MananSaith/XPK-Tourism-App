@@ -26,63 +26,37 @@ class SignupScreen extends StatelessWidget {
                 key: _formKey,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      left: 20, right: 20, top: 70, bottom: 12),
+                      left: 20, right: 20, top: 40, bottom: 12),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Hero(
-                                  tag: 'signUp',
-                                  child: TextWidget(
-                                    text: MyText.signUp,
-                                    fSize: 30,
-                                    fWeight: MyFontWeight.bold,
-                                    textColor: AppColors.primaryAppBar,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: screenHeight * 0.045,
-                              ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: CustomTextField(
-                                  width: screenWidth * 0.5,
-                                  hintText: MyText.userName,
-                                  backgroundColor: Colors.transparent,
-                                  borderColor: Colors.white,
-                                  borderRadius: 50,
-                                  validator: controller.validUserName,
-                                  textInputAction: TextInputAction.next,
-                                  trailingIcon:
-                                      Icon(Icons.person, color: Colors.white),
-                                  onChanged: (value) =>
-                                      controller.userName.value = value,
-                                ),
-                              ),
-                            ],
+                          Hero(
+                            tag: 'signUp',
+                            child: TextWidget(
+                              text: MyText.signUp,
+                              fSize: 30,
+                              fWeight: FontWeights.bold,
+                              textColor: AppColors.primaryAppBar,
+                            ),
                           ),
                           Obx(() {
                             return Stack(
                               children: [
                                 CircleAvatar(
-                                    radius: 60,
-                                    backgroundColor: AppColors.gray100,
-                                    backgroundImage: controller
-                                            .image.path.isNotEmpty
-                                        ? FileImage(File(controller.image.path))
-                                        : AssetImage(
-                                            AppImages.defultProfile,
-                                          )),
+                                  radius: 50,
+                                  backgroundColor: AppColors.gray100,
+                                  backgroundImage: controller.image.value !=
+                                          null
+                                      ? FileImage(controller.image
+                                          .value!) // Use `.value!` to get the File
+                                      : AssetImage(AppImages.defultProfile)
+                                          as ImageProvider,
+                                ),
                                 Positioned(
                                   bottom: 0,
                                   right: 0,
@@ -105,6 +79,17 @@ class SignupScreen extends StatelessWidget {
                             );
                           }),
                         ],
+                      ),
+                      10.sbh,
+                      CustomTextField(
+                        hintText: MyText.userName,
+                        backgroundColor: Colors.transparent,
+                        borderColor: Colors.white,
+                        borderRadius: 50,
+                        validator: controller.validUserName,
+                        textInputAction: TextInputAction.next,
+                        trailingIcon: Icon(Icons.person, color: Colors.white),
+                        onChanged: (value) => controller.userName.value = value,
                       ),
                       SizedBox(
                         height: screenHeight * 0.025,
@@ -162,8 +147,8 @@ class SignupScreen extends StatelessWidget {
                           trailingIcon: IconButton(
                             icon: Icon(
                               controller.isPasswordConfirmVisible.value
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               color: Colors.white,
                             ),
                             onPressed: () {
@@ -243,12 +228,13 @@ class SignupScreen extends StatelessWidget {
                                   text: MyText.signUp,
                                   fontSize: Responsive.fontSize(context, 18),
                                   gradient: AppColors.buttonGradian,
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (_formKey.currentState!.validate() &&
                                         controller.birthday.value.isNotEmpty &&
-                                        controller.image.path.isNotEmpty) {
+                                        controller.image.value != null) {
+                                      await controller.signup();
                                       showCustomDialog(
-                                        title: MyText.resetPassword,
+                                        title: MyText.verifyEmailTitle,
                                         content: controller.email.value +
                                             " " +
                                             MyText.verifyEmailContent,
@@ -269,7 +255,7 @@ class SignupScreen extends StatelessWidget {
                                           ),
                                         ],
                                       );
-                                       Get.toNamed(AppRoutes.login);
+                                      // Get.toNamed(AppRoutes.login);
                                     } else {
                                       showCustomSnackBar(
                                         title: 'Failed',
@@ -302,7 +288,7 @@ class SignupScreen extends StatelessWidget {
                             },
                             child: TextWidget(
                               text: MyText.login,
-                              fWeight: MyFontWeight.bold,
+                              fWeight: FontWeights.bold,
                               fSize: Responsive.fontSize(context, 16),
                               textColor: AppColors.primaryButton,
                             ),

@@ -10,7 +10,7 @@ class AuthController extends GetxController {
   RxBool isPasswordVisible = false.obs;
   RxBool isPasswordConfirmVisible = false.obs;
   RxBool isRememberMe = false.obs;
-  late File image;
+  Rx<File?> image = Rx<File?>(null); // Initialize with null
   var profileImageUrl = ''.obs;
   //Rxn<Uint8List> byte = Rxn<Uint8List>();
 
@@ -19,57 +19,24 @@ class AuthController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   var check = false.obs;
-
   void login() async {
     check(true);
+    debugPrint(
+        "Trying to login with Email: ${email.value}, Password: ${newPassword.value}");
+
     try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email.value,
-        password: newPassword.value,
+      await _auth.signInWithEmailAndPassword(
+        email: email.value.trim(),
+        password: newPassword.value.trim(),
       );
-
-      // Check if email is verified
-      User? user = userCredential.user;
-      if (user != null) {
-        if (user.emailVerified) {
-          check(false);
-          Get.offAllNamed(AppRoutes.home);
-        } else {
-          check(false);
-          showCustomDialog(
-            title: MyText.resetPassword,
-            content: email.value + " " + MyText.sendEmailVerifyFromLogin,
-            actions: [
-              CustomElevatedButton(
-                text: "ok",
-                onPressed: () {
-                  Get.offAllNamed(AppRoutes.login);
-                },
-                height: 35.h,
-                width: 70.w,
-                borderRadius: 50,
-                fontSize: 12.sp,
-                backgroundColor: AppColors.secondaryButton,
-              ),
-            ],
-          );
-        }
-
-        check(false);
-      } else {
-        check(false);
-        await _auth.signOut(); // Sign out the user if not verified
-        Get.offAllNamed(AppRoutes.login);
-        Get.snackbar("Error", "Invalid email or password.");
-      }
+      check(false);
     } catch (e) {
       check(false);
-      Get.snackbar("Error", e.toString());
-      debugPrint(e.toString());
+      Get.snackbar("Error", "Invalid email or password.");
     }
   }
 
-  void signup() async {
+  Future<void> signup() async {
     check(true);
     try {
       UserCredential userCredential =
@@ -113,13 +80,18 @@ class AuthController extends GetxController {
   }
 
   Future<void> UploadImage() async {
+    if (image.value == null) {
+      Get.snackbar("Error", "No image selected!");
+      return;
+    }
+
     String fileName =
         'users/${userName.value}-${_auth.currentUser!.uid}/${DateTime.now().millisecondsSinceEpoch}.jpg';
     Reference ref = _storage.ref().child(fileName);
 
     try {
-      File imageFile = File(image.path);
-      await ref.putFile(imageFile);
+      File? imageFile = image.value; // Access the value safely
+      await ref.putFile(imageFile!); // Ensure it's not null
       String downloadUrl = await ref.getDownloadURL();
       profileImageUrl.value = downloadUrl;
     } catch (e) {
@@ -161,9 +133,13 @@ class AuthController extends GetxController {
 
   // Use FilePickerHelper to pick an image
   Future<void> pickImage() async {
-    PlatformFile? image = await FilePickerHelper.pickImage();
-    if (image != null) {
-      image = image;
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+
+    if (result != null && result.files.isNotEmpty) {
+      // Convert PlatformFile to File
+      File selectedFile = File(result.files.single.path!);
+      image.value = selectedFile; // Update Rx<File?>
     }
   }
 
@@ -233,7 +209,7 @@ class AuthController extends GetxController {
   ) {
     if (value == null || value.isEmpty) {
       return 'User Name cannot be empty';
-    } else if (value.length < 8) {
+    } else if (value.length < 5) {
       return 'User Name must be at least 8 characters long';
     }
     return null; // Return null if the passwords match

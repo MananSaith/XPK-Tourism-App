@@ -1,3 +1,4 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:xpk/app/my_app.dart';
@@ -10,6 +11,30 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   AuthBinding().dependencies();
-
+initAppCheck();
   runApp(MyApp());
 }
+
+
+void initAppCheck() async {
+  await FirebaseAppCheck.instance.activate(
+    androidProvider: AndroidProvider.debug, // Use debug mode to bypass App Check
+    webProvider: ReCaptchaV3Provider(''), // Empty reCAPTCHA key for web
+  );
+}
+
+
+/*
+
+git commit -m "feat: Add city and type filters, setup time-based model
+
+- Added city filter for more precise search results.
+- Implemented type filter to refine place categories.
+- Set up initial model structure for time-based filtering."
+
+
+start ::::
+
+home ma time duration tab ko set karna hai time duration sara para hai 
+
+*/

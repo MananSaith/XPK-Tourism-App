@@ -1,5 +1,3 @@
-
-
 import 'package:get/get.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 
@@ -13,7 +11,8 @@ class SplashScreen extends StatelessWidget {
 
     Future.delayed(const Duration(seconds: 3), () {
       final isLoggedIn = Get.find<AuthController>().isLoggedIn();
-      Get.offAllNamed(isLoggedIn ? AppRoutes.home : AppRoutes.getStart);
+      Get.offAllNamed(
+          isLoggedIn ? AppRoutes.navigateScreen : AppRoutes.getStart);
     });
 
     Future.delayed(const Duration(seconds: 1), () {

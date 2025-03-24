@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: TextWidget(
                           text: MyText.login,
-                          fWeight: MyFontWeight.samiBold,
+                          fWeight: FontWeights.semiBold,
                           textColor: AppColors.primaryAppBar,
                           fSize: 30,
                         ),
@@ -63,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                         borderColor: Colors.white,
                         borderRadius: 50,
                         validator: controller.validateEmail,
-                        onChanged: (value) => controller.userName.value = value,
+                        onChanged: (value) => controller.email.value = value,
                       ),
                       SizedBox(
                         height: screenHeight * 0.025,
@@ -94,27 +94,6 @@ class LoginScreen extends StatelessWidget {
                       }),
                       Row(
                         children: [
-                          // Obx(() {
-                          //   return Checkbox(
-                          //     value: isRememberMe.value,
-                          //     onChanged: (value) {
-                          //       isRememberMe.value = value!;
-                          //     },
-                          //     activeColor: AppColors.primaryButton,
-                          //     splashRadius: 30,
-                          //     shape: RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.circular(7),
-                          //     ),
-                          //   );
-                          // }),
-                          // InkWell(
-                          //   //onTap: ,
-                          //   child: TextWidget(
-                          //     text: MyText.termAndCondition,
-                          //     fSize: 16,
-                          //     textColor: AppColors.warning,
-                          //   ),
-                          // ),
                           Spacer(),
                           InkWell(
                             onTap: () {
@@ -131,19 +110,23 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(
                         height: screenHeight * 0.025,
                       ),
-                      Material(
-                        color: Colors.transparent,
-                        child: CustomElevatedButton(
-                          borderRadius: 50,
-                          text: MyText.login,
-                          fontSize: Responsive.fontSize(context, 18),
-                          gradient: AppColors.buttonGradian,
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              controller.login();
-                            }
-                          },
-                        ),
+                      Obx(
+                        () => controller.check.value
+                            ? customLoader(AppColors.primaryAppBar)
+                            : Material(
+                                color: Colors.transparent,
+                                child: CustomElevatedButton(
+                                  borderRadius: 50,
+                                  text: MyText.login,
+                                  fontSize: Responsive.fontSize(context, 18),
+                                  gradient: AppColors.buttonGradian,
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      controller.login();
+                                    }
+                                  },
+                                ),
+                              ),
                       ),
                       SizedBox(
                         height: screenHeight * 0.045,
@@ -163,7 +146,7 @@ class LoginScreen extends StatelessWidget {
                               },
                               child: TextWidget(
                                 text: MyText.signUp,
-                                fWeight: MyFontWeight.bold,
+                                fWeight: FontWeights.bold,
                                 fSize: Responsive.fontSize(context, 16),
                                 textColor: AppColors.primaryButton,
                               ),

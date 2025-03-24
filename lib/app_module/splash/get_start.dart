@@ -51,7 +51,7 @@ class GetStart extends StatelessWidget {
                       text: MyText.getStartText,
                       fSize: 16,
                       align: TextAlign.center,
-                      fWeight: MyFontWeight.samiBold,
+                      fWeight: FontWeights.semiBold,
                     ),
                   ),
                 ),
@@ -65,7 +65,7 @@ class GetStart extends StatelessWidget {
                   height: screenHeight * 0.07,
                   fontSize: Responsive.fontSize(context, 20),
                   borderRadius: 50,
-                  fontWeight: MyFontWeight.samiBold,
+                  fontWeight: FontWeights.semiBold,
                   onPressed: () {
                     Get.offAllNamed(AppRoutes.login);
                   },

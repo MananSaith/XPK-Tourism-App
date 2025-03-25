@@ -11,18 +11,17 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   AuthBinding().dependencies();
-initAppCheck();
+  initAppCheck();
   runApp(MyApp());
 }
 
-
 void initAppCheck() async {
   await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug, // Use debug mode to bypass App Check
-    webProvider: ReCaptchaV3Provider(''), // Empty reCAPTCHA key for web
+    androidProvider:
+        AndroidProvider.debug, 
+    webProvider: ReCaptchaV3Provider(''), 
   );
 }
-
 
 /*
 
@@ -34,7 +33,7 @@ git commit -m "feat: Add city and type filters, setup time-based model
 
 
 start ::::
-
+login error pending
 home ma time duration tab ko set karna hai time duration sara para hai 
 
 */

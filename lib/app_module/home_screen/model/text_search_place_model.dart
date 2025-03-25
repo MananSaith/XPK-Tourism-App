@@ -55,7 +55,9 @@ class TextSearchPlaceModel {
     plusCode = json['plus_code'] != null
         ? new PlusCode.fromJson(json['plus_code'])
         : null;
-    rating = (json['rating'] as num).toDouble();
+    // rating = (json['rating'] as num).toDouble();
+    rating = json['rating'] != null ? (json['rating'] as num).toDouble() : 0.0;
+
     reference = json['reference'];
     types = json['types'].cast<String>();
     userRatingsTotal = json['user_ratings_total'];
@@ -117,6 +119,25 @@ class Geometry {
   }
 }
 
+// class Location {
+//   double? lat;
+//   double? lng;
+
+//   Location({this.lat, this.lng});
+
+//   Location.fromJson(Map<String, dynamic> json) {
+//     lat = (json['lat'] as num).toDouble();
+//     lng = (json['lng'] as num).toDouble();
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['lat'] = this.lat;
+//     data['lng'] = this.lng;
+//     return data;
+//   }
+// }
+
 class Location {
   double? lat;
   double? lng;
@@ -124,15 +145,15 @@ class Location {
   Location({this.lat, this.lng});
 
   Location.fromJson(Map<String, dynamic> json) {
-    lat = (json['lat'] as num).toDouble();
-    lng = (json['lng'] as num).toDouble();
+    lat = json['lat'] != null ? (json['lat'] as num?)?.toDouble() ?? 0.0 : 0.0;
+    lng = json['lng'] != null ? (json['lng'] as num?)?.toDouble() ?? 0.0 : 0.0;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['lat'] = this.lat;
-    data['lng'] = this.lng;
-    return data;
+    return {
+      'lat': lat,
+      'lng': lng,
+    };
   }
 }
 

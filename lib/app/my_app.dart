@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:xpk/app/example.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 
 class MyApp extends StatelessWidget {

@@ -1,3 +1,4 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:xpk/app_module/home_screen/model/text_search_place_model.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
@@ -14,7 +15,7 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    MapsService.getCurrentLocation();
+    getCurrentLocation();
     getPlaceApi();
     super.onInit();
   }
@@ -42,6 +43,7 @@ class HomeController extends GetxController {
       debugPrint("=========response ${data.toString()}");
       displayPlaceList.assignAll(
           data.map((data) => TextSearchPlaceModel.fromJson(data)).toList());
+      searchController.clear();
       debugPrint("========= lenght ${displayPlaceList.length}");
     } catch (e) {
       debugPrint("================= error $e");
@@ -49,30 +51,46 @@ class HomeController extends GetxController {
     isPageLoad(false);
   }
 
-
-   void timeDurationApi() async {
+  void timeDurationApi() async {
     isPageLoad(true);
-    displayPlaceList.clear();
 
     try {
-      List<Map<String, dynamic>> data =
-          []; //= await MapsService().textSearchPlaces();
+      List<Map<String, dynamic>> data = [];
+      if (timeDuration.value == "NA") {
+        isPageLoad(false);
+        return;
+      }
+      int radius = getDistanceForTime(timeDuration.value);
+      Position? position = await getCurrentLocation();
+      if (position == null) {
+        debugPrint("============= Error: Unable to fetch location.");
+        appToastView(title: "Location access required.");
+        isPageLoad(false);
+        return; // Stop execution if location is null
+      }
 
       if (searchController.text.isNotEmpty) {
-        data = await MapsService().textSearchPlaces(
+        data = await MapsService().nearestPlaces(
             query: searchController.text,
-            city: this.city.value,
-            type: this.type.value);
+            latitude: position.latitude,
+            longitude: position.longitude,
+            type: this.type.value,
+            radius: radius);
       } else {
         print(
-            "=============== city ${this.city.value} ========== type ${this.type.value}");
-        data = await MapsService()
-            .textSearchPlaces(city: this.city.value, type: this.type.value);
+            "==== radius $radius ==== lat ${position.latitude.toString()}  long ${position.longitude.toString()} === type ${this.type.value}");
+        data = await MapsService().nearestPlaces(
+            latitude: position.latitude,
+            longitude: position.longitude,
+            type: this.type.value,
+            radius: radius);
       }
 
       debugPrint("=========response ${data.toString()}");
+      displayPlaceList.clear();
       displayPlaceList.assignAll(
           data.map((data) => TextSearchPlaceModel.fromJson(data)).toList());
+      searchController.clear();
       debugPrint("========= lenght ${displayPlaceList.length}");
     } catch (e) {
       debugPrint("================= error $e");
@@ -161,4 +179,25 @@ class HomeController extends GetxController {
     "3 Days",
     "5 Days",
   ];
+
+  int getDistanceForTime(String duration) {
+    switch (duration) {
+      case "2 Hours":
+        return 5000; // 5 km for 2 hours
+      case "4 Hours":
+        return 8000; // 8 km for 4 hours
+      case "6 Hours":
+        return 12000; // 12 km for 6 hours
+      case "8 Hours":
+        return 16000; // 16 km for 8 hours
+      case "2 Day":
+        return 50000; // 50 km for 2 days
+      case "3 Days":
+        return 80000; // 80 km for 3 days
+      case "5 Days":
+        return 120000; // 120 km for 5 days
+      default:
+        return 0; // "NA" or unknown values return 0 km
+    }
+  }
 }

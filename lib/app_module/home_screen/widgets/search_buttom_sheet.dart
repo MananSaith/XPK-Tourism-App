@@ -17,7 +17,7 @@ Future<Map<String, dynamic>?> showPlaceSearchBottomSheet() async {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 10,
             spreadRadius: 5,
           ),
@@ -103,7 +103,7 @@ Future<Map<String, dynamic>?> showPlaceSearchBottomSheet() async {
                   border: Border.all(color: Colors.grey.shade300, width: 1),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black12.withOpacity(0.1),
+                      color: Colors.black12.withValues(alpha: 0.1),
                       blurRadius: 6,
                       offset: Offset(0, 3),
                     ),
@@ -115,7 +115,7 @@ Future<Map<String, dynamic>?> showPlaceSearchBottomSheet() async {
                       padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.blue.withOpacity(0.1),
+                        color: Colors.blue.withValues(alpha: 0.1),
                       ),
                       child: Icon(Icons.location_on,
                           color: Colors.blueAccent, size: 24),

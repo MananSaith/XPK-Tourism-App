@@ -6,7 +6,6 @@ import 'package:xpk/app_module/detail_screen/widgets/map_with_polyline.dart';
 import 'package:xpk/app_module/detail_screen/widgets/quick_fact.dart';
 import 'package:xpk/app_module/detail_screen/widgets/services_grid.dart';
 import 'package:xpk/app_module/home_screen/model/text_search_place_model.dart';
-import 'package:xpk/config/server/maps_services.dart';
 import 'package:xpk/utils/app_color/app_color.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -29,18 +28,18 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Future<void> _loadPlaceDetails() async {
-    try {
-      final place = await MapsService.getPlaceDetails(widget.placeId);
-      setState(() {
-        _place = place;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Error loading place details: $e';
-        _isLoading = false;
-      });
-    }
+    // try {
+    //   final place = await MapsService.getPlaceDetails(widget.placeId);
+    //   setState(() {
+    //     _place = place;
+    //     _isLoading = false;
+    //   });
+    // } catch (e) {
+    //   setState(() {
+    //     _errorMessage = 'Error loading place details: $e';
+    //     _isLoading = false;
+    //   });
+    // }
   }
 
   @override

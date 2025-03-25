@@ -13,6 +13,7 @@ export 'package:xpk/app_module/home_screen/controller/home_controller.dart';
 export 'package:xpk/config/server/maps_services.dart';
 export 'package:xpk/app_module/home_screen/widgets/search_buttom_sheet.dart';
 export 'package:xpk/app_module/home_screen/widgets/place_card.dart';
+export 'package:xpk/config/server/seeting_app.dart';
 
 export 'package:fluttertoast/fluttertoast.dart';
 export 'package:xpk/utils/padding/app_borader_radius.dart';

@@ -8,10 +8,12 @@ class CustomSearchBar extends StatelessWidget {
   final IconData? lastIcon;
   final Color lastIconColor;
   final TextEditingController controller;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final VoidCallback? onIconTap;
-  final bool isReadOnly; // 🔥 New optional parameter added
-
+  final bool isReadOnly;
+  final ValueChanged<String>? onSubmit;
+  final TextInputAction textInputAction;
+  final TextInputType keyboardType; // ✅ Optional Keyboard Type Added
   final Color boxShadowColor;
   final double boxShadowBlurRadius;
   final double boxShadowSpreadRadius;
@@ -26,9 +28,12 @@ class CustomSearchBar extends StatelessWidget {
     this.hintTextColor = Colors.grey,
     this.lastIcon,
     this.lastIconColor = Colors.black,
-    required this.onTap,
+    this.onTap,
     this.onIconTap,
-    this.isReadOnly = false, // Default: false (means keyboard will open)
+    this.isReadOnly = false,
+    this.onSubmit,
+    this.textInputAction = TextInputAction.done,
+    this.keyboardType = TextInputType.text, // ✅ Default is text input
     this.boxShadowColor = const Color.fromRGBO(0, 0, 0, 0.2),
     this.boxShadowBlurRadius = 4,
     this.boxShadowSpreadRadius = 2,
@@ -55,7 +60,10 @@ class CustomSearchBar extends StatelessWidget {
       child: TextField(
         controller: controller,
         onTap: onTap,
-        readOnly: isReadOnly, // ✅ Now TextField can be read-only
+        readOnly: isReadOnly,
+        keyboardType: keyboardType, // ✅ Now it’s optional
+        textInputAction: textInputAction,
+        onSubmitted: onSubmit,
         style: TextStyle(
           fontSize: 14.sp,
         ),
@@ -82,11 +90,13 @@ class CustomSearchBar extends StatelessWidget {
           suffixIcon: lastIcon != null
               ? GestureDetector(
                   onTap: onIconTap,
-                  child: Padding(
-                    padding: EdgeInsets.all(12.sp),
+                  child: Container(
+                    width: 40.w,
+                    height: 40.h,
+                    alignment: Alignment.center,
                     child: Icon(
                       lastIcon!,
-                      size: 20.sp,
+                      size: 22.sp,
                       color: lastIconColor,
                     ),
                   ),

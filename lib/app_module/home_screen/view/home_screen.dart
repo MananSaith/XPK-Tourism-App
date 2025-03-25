@@ -47,15 +47,24 @@ class HomeScreen extends StatelessWidget {
                               controller: controller.searchController,
                               leadingIcon: CupertinoIcons.search,
                               lastIcon: CupertinoIcons.slider_horizontal_3,
-                              isReadOnly: true,
+                              // isReadOnly: true,
                               onIconTap: () {
                                 controller.isFilter.value =
                                     !controller.isFilter.value;
                               },
-                              onTap: () async {
-                                // FocusScope.of(context).unfocus();
-                                showPlaceSearchBottomSheet();
+                              textInputAction: TextInputAction.search,
+                              onSubmit: (v) {
+                                FocusScope.of(context).unfocus();
+                                if (controller.timeDuration.value != "NA") {
+                                  controller.timeDurationApi();
+                                } else {
+                                  controller.getPlaceApi();
+                                }
                               },
+                              // onTap: () async {
+                              //   // FocusScope.of(context).unfocus();
+                              //   showPlaceSearchBottomSheet();
+                              // },
                             ),
                           )
                         ],
@@ -144,7 +153,15 @@ class HomeScreen extends StatelessWidget {
                                           color: AppColors.cardBackground,
                                           onTap: () {
                                             controller.city.value = city;
-                                            controller.getPlaceApi();
+                                            if (controller.timeDuration.value !=
+                                                "NA") {
+                                              showCustomSnackBar(
+                                                  message:
+                                                      "For city search Time Duration Must be NA",
+                                                  title: 'Alter');
+                                            } else {
+                                              controller.getPlaceApi();
+                                            }
                                           }, // Set selected city
                                           isSelected:
                                               controller.city.value == city,
@@ -177,7 +194,12 @@ class HomeScreen extends StatelessWidget {
                                           color: AppColors.cardBackground,
                                           onTap: () {
                                             controller.type.value = category;
-                                            controller.getPlaceApi();
+                                            if (controller.timeDuration.value !=
+                                                "NA") {
+                                              controller.timeDurationApi();
+                                            } else {
+                                              controller.getPlaceApi();
+                                            }
                                           }, // Set selected type
                                           isSelected:
                                               controller.type.value == category,

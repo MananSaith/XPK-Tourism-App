@@ -3,6 +3,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 
 Future<Position?> getCurrentLocation() async {
+
+
   try {
     // Step 1: Check if GPS is enabled
     bool isGPSEnabled = await Geolocator.isLocationServiceEnabled();

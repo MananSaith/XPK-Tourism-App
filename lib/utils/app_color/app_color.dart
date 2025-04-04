@@ -16,6 +16,8 @@ class AppColors {
 
   // Text and Elements
   static const Color jetBlack = Color(0xFF000000);
+  static const Color tranparentBlack = Color.fromARGB(155, 0, 0, 0);
+
   static const Color subText = Color(0xFF333333);
   static const Color lightGray = Color(0xFFD3D3D3); // Light Gray
 
@@ -26,7 +28,6 @@ class AppColors {
   static const Color dangerRed = Color(0xFFFF4D4D);
   static const Color successGreen = Color(0xFF2ECC71);
   static const Color gray = Color.fromARGB(255, 124, 124, 124);
-
 
   // Status Colors
   static const Color warning = Color(0xFFFAE635); // Yellow500
@@ -39,13 +40,11 @@ class AppColors {
   static const Color bgDark = Color(0xFF121212); // Black
   static const Color white = Color.fromARGB(255, 255, 255, 255); // Black
 
-
   // Text and Icon Colors
   static const Color contentPrimary = Color(0xFF212121); // Gray900
   static const Color contentSecondary = Color(0xFF414141); // Gray800
   static const Color contentTertiary = Color(0xFF5A5A5A); // Gray700
   static const Color contentDisabled = Color(0xFFB8B8B8); // Gray300
-  
 
   // Additional Shades
   static const Color gray50 = Color(0xFFF7F7F7);
@@ -59,19 +58,16 @@ class AppColors {
   static const Color gray800 = Color(0xFF414141);
   static const Color gray900 = Color(0xFF2A2A2A);
 
-
-
   // Borders and Dividers
   static const Color borderDivider = Color(0xFFF0F0F0);
-  static const LinearGradient buttonGradian =  LinearGradient(
-                  colors: [primaryAppBar, mutedElements], // Gradient colors
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                );
-  static const LinearGradient scafoldBackGroundGrandient =  LinearGradient(
-                  colors: [scaffoldBackground, cardBackground], // Gradient colors
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                );
-
+  static const LinearGradient buttonGradian = LinearGradient(
+    colors: [primaryAppBar, mutedElements], // Gradient colors
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+  static const LinearGradient scafoldBackGroundGrandient = LinearGradient(
+    colors: [scaffoldBackground, cardBackground], // Gradient colors
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+  );
 }

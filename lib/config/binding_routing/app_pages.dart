@@ -21,5 +21,7 @@ class AppPages {
         page: () => ForgetPasswordScreen()),
     GetPage(name: AppRoutes.home, page: () => HomeScreen()),
     GetPage(name: AppRoutes.navigateScreen, page: () => NavigationScreen()),
+    GetPage(name: AppRoutes.detailScreen, page: () => DetailScreen()),
+
   ];
 }

@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:xpk/app_module/new_blog_screen/controller/new_blog_controller.dart';
 import 'package:xpk/config/server/image_upload_service.dart';
 import 'package:xpk/utils/app_color/app_color.dart';
 
@@ -11,15 +13,15 @@ class ImageUploadSection extends StatefulWidget {
   @override
   _ImageUploadSectionState createState() => _ImageUploadSectionState();
 }
-
 class _ImageUploadSectionState extends State<ImageUploadSection> {
-  List<XFile> _images = [];
+  final NewBlogController controller = Get.find<NewBlogController>();
+
 
   Future<void> _pickImages() async {
     final List<XFile> pickedImages =
         await ImageUploadService.pickMultipleImages();
     setState(() {
-      _images.addAll(pickedImages);
+      controller.selectedImages.addAll(pickedImages);
     });
   }
 
@@ -32,7 +34,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
           height: 100,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: _images.length + 1,
+            itemCount:  controller.selectedImages.length + 1,
             itemBuilder: (context, index) {
               if (index == 0) {
                 return Container(
@@ -56,7 +58,7 @@ class _ImageUploadSectionState extends State<ImageUploadSection> {
                   color: Colors.grey,
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                    image: FileImage(File(_images[index - 1].path)),
+                    image: FileImage(File( controller.selectedImages[index - 1].path)),
                     fit: BoxFit.cover,
                   ),
                 ),

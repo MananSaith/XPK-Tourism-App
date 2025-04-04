@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 
 class MapsService {
@@ -32,7 +33,7 @@ class MapsService {
           "?query=${Uri.encodeComponent(searchQuery)}"
           "&region=pk"
           "&key=$apiKey";
-      debugPrint("=========================== url $url");
+      debugPrint("====== url TextSearch: $url");
 
       try {
         final response = await http.get(Uri.parse(url));
@@ -79,7 +80,7 @@ class MapsService {
         url += "&keyword=${Uri.encodeComponent(query)}";
       }
 
-      debugPrint("=========================== URL: $url");
+      debugPrint("===== URL Nearest Api: $url");
 
       try {
         final response = await http.get(Uri.parse(url));
@@ -103,75 +104,91 @@ class MapsService {
     }
   }
 
-  // Future<List<Map<String, dynamic>>> nearestPlaces({
-  //   required double latitude, // 📍 Required Latitude
-  //   required double longitude, // 📍 Required Longitude
-  //   int radius = 3000, // 📏 Default radius in meters
-  //   String? type = "tourist_attraction", // 🏛 Default type
-  //   String? query, // 🔍 Optional search query
-  // }) async {
-  //   bool isInternet = await internetConnectivity();
-  //   if (!isInternet) {
-  //     print("================== Internet Unstable");
-  //     appToastView(title: "Unstable Internet");
-  //     return [];
-  //   }
 
-  //   const String apiKey = ApiConstant.googleApikey;
 
-  //   // ✅ **Construct URL**
-  //   String url = "${ApiConstant.nearestBaseUrl}?"
-  //       "location=$latitude,$longitude"
-  //       "&strictbounds" // 🔹 Limits results to the given area
-  //       "&rankby=prominence" // 🔥 Get most famous places first
-  //       "&radius=$radius"
-  //       "&type=$type"
-  //       "&key=$apiKey";
+// Function to launch Google Maps navigation
+Future<void> navigateToGoogleMaps({
+  required double originLat,
+  required double originLng,
+  required double destinationLat,
+  required double destinationLng,
+}) async {
+  final googleMapsUrl = Uri.parse(
+      'https://www.google.com/maps/dir/?api=1&origin=$originLat,$originLng&destination=$destinationLat,$destinationLng&travelmode=driving');
 
-  //   if (query != null && query.isNotEmpty) {
-  //     url += "&keyword=${Uri.encodeComponent(query)}"; // 🔍 Add search keyword
-  //   }
+  if (await canLaunchUrl(googleMapsUrl)) {
+    await launchUrl(googleMapsUrl);
+  } else {
+    throw 'Could not launch Google Maps';
+  }
+}
 
-  //   debugPrint("=========================== URL: $url");
 
-  //   try {
-  //     final response = await http.get(Uri.parse(url));
 
-  //     if (response.statusCode == 200) {
-  //       final data = json.decode(response.body);
-  //       List<Map<String, dynamic>> results =
-  //           List<Map<String, dynamic>>.from(data['results'] ?? []);
+  Future<Map<String, dynamic>?> fetchDistanceAndDuration(
+    double originLat, double originLng, double destLat, double destLng) async {
+  const String apiKey = ApiConstant.googleApikey;
+  
+  String url = "https://maps.googleapis.com/maps/api/distancematrix/json"
+      "?origins=$originLat,$originLng"
+      "&destinations=$destLat,$destLng"
+      "&key=$apiKey";
 
-  //       print("====== Total Places Found: ${results.length}");
+  try {
+    final response = await http.get(Uri.parse(url));
 
-  //       // ✅ **Define Allowed Place Types**
-  //       List<String> allowedTypes = [
-  //         "tourist_attraction",
-  //         "park",
-  //         "museum",
-  //         "landmark", // 🏛 Add More Types Here
-  //         "establishment",
-  //         "point_of_interest",
-  //       ];
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      
+      if (data["status"] == "OK" && data["rows"].isNotEmpty) {
+        var elements = data["rows"][0]["elements"][0];
 
-  //       // ✅ **Filter to Include Only Specific Place Types**
-  //       results = results.where((place) {
-  //         List<dynamic> types = place['types'] ?? [];
-  //         print("✅ Checking: ${place['name']} - Types: $types");
+        return {
+          "distance": elements["distance"]["text"],
+          "duration": elements["duration"]["text"],
+        };
+      }
+    }
+  } catch (e) {
+    print("Error fetching distance/time: $e");
+  }
+  return null;
+}
 
-  //         // ✅ Check if any of the allowed types exist in the place types
-  //         return types.any((type) => allowedTypes.contains(type));
-  //       }).toList();
 
-  //       print("====== Filtered Places Count: ${results.length}");
-  //       return results;
-  //     } else {
-  //       print("🛑 Error: ${response.statusCode} - ${response.body}");
-  //       return [];
-  //     }
-  //   } catch (e) {
-  //     print("================== Exception: $e");
-  //     return [];
-  //   }
-  // }
+  Future<Map<String, dynamic>> detailAboutPlace({
+    required String placeId,
+  }) async {
+    bool isInternet = await internetConnectivity();
+    if (isInternet) {
+      const String apiKey = ApiConstant.googleApikey;
+
+      String url = "${ApiConstant.detailAboitBaseUrl}?"
+          "place_id=$placeId"
+          "&key=$apiKey";
+
+      debugPrint("===== URL Deatil Api: $url");
+
+      try {
+        final response = await http.get(Uri.parse(url));
+
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          print("============== response main ${data['result']}");
+        
+          return data['result'];
+        } else {
+          print("Error: ${response.statusCode} - ${response.body}");
+          return {};
+        }
+      } catch (e) {
+        print("Exception: $e");
+        return {};
+      }
+    } else {
+      print("Internet Unstable");
+      appToastView(title: "Unstable Internet");
+      return {};
+    }
+  }
 }

@@ -19,48 +19,117 @@ class AuthController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   var check = false.obs;
+  // void login() async {
+  //   check(true);
+  //   debugPrint(
+  //       "Trying to login with Email: ${email.value}, Password: ${newPassword.value}");
+
+  //   try {
+  //     await _auth.signInWithEmailAndPassword(
+  //       email: email.value.trim(),
+  //       password: newPassword.value.trim(),
+  //     );
+  //     check(false);
+  //   } catch (e) {
+  //     check(false);
+  //     Get.snackbar("Error", "Invalid email or password.");
+  //   }
+  // }
+
   void login() async {
     check(true);
     debugPrint(
         "Trying to login with Email: ${email.value}, Password: ${newPassword.value}");
 
     try {
-      await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email.value.trim(),
         password: newPassword.value.trim(),
       );
+
+      User? user = userCredential.user;
       check(false);
+
+      if (user != null) {
+        //debugPrint("Login successful: UID = ${user.uid}");
+        checkEmailVerification();
+      } else {
+        debugPrint("Login failed: No user returned.");
+      }
     } catch (e) {
       check(false);
+      debugPrint("Login error: $e");
       Get.snackbar("Error", "Invalid email or password.");
     }
   }
 
+  // Future<void> signup() async {
+  //   check(true);
+  //   try {
+  //     UserCredential userCredential =
+  //         await _auth.createUserWithEmailAndPassword(
+  //       email: email.value,
+  //       password: newPassword.value,
+  //     );
+  //     await userCredential.user?.sendEmailVerification();
+  //     User user = userCredential.user!;
+  //     await UploadImage();
+  //     _saveUserToFirestore(user);
+  //     check(false);
+  //   } catch (e) {
+  //     check(false);
+  //     Get.snackbar("Error", e.toString());
+  //   }
+  //   check(false);
+  // }
+
   Future<void> signup() async {
-    check(true);
-    try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email.value,
-        password: newPassword.value,
-      );
-      await userCredential.user?.sendEmailVerification();
-      User user = userCredential.user!;
-      await UploadImage();
-      _saveUserToFirestore(user);
-      check(false);
-    } catch (e) {
-      check(false);
-      Get.snackbar("Error", e.toString());
-    }
+  check(true);
+  try {
+    UserCredential userCredential =
+        await _auth.createUserWithEmailAndPassword(
+      email: email.value.trim(),
+      password: newPassword.value.trim(),
+    );
+
+    await userCredential.user?.sendEmailVerification();
+    User user = userCredential.user!;
+    await UploadImage();
+    _saveUserToFirestore(user);
+    
     check(false);
+    Get.snackbar("Success", "Account created! Please verify your email.");
+  } on FirebaseAuthException catch (e) {
+    check(false);
+    if (e.code == 'email-already-in-use') {
+
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null && currentUser.email == email.value.trim()) {
+  
+        if (!currentUser.emailVerified) {
+          await currentUser.sendEmailVerification();
+          Get.snackbar("Verification Sent", "Please check your email for verification.");
+        } else {
+          Get.snackbar("Info", "Your email is already verified. Try logging in.");
+        }
+      } else {
+        Get.snackbar("Error", "This email is already registered. Try logging in.");
+      }
+    } else {
+      Get.snackbar("Error", e.message ?? "Signup failed. Please try again.");
+    }
+  } catch (e) {
+    check(false);
+    Get.snackbar("Error", "An unexpected error occurred.");
   }
+}
+
 
   void checkEmailVerification() async {
     User? user = _auth.currentUser;
     await user?.reload();
     if (user != null && user.emailVerified) {
-      // Get.offAllNamed(Routes.home);
+      Get.offAllNamed(AppRoutes.navigateScreen);
     } else {
       Get.snackbar("Error", "Email not verified yet.");
     }

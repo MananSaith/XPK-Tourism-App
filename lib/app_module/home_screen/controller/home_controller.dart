@@ -11,6 +11,7 @@ class HomeController extends GetxController {
   RxString timeDuration = "NA".obs;
   RxString city = "Pakistan".obs;
   RxString type = "Park".obs;
+
   RxList<TextSearchPlaceModel> displayPlaceList = <TextSearchPlaceModel>[].obs;
 
   @override
@@ -175,9 +176,9 @@ class HomeController extends GetxController {
     "4 Hours",
     "6 Hours",
     "8 Hours",
-    "2 Day",
-    "3 Days",
-    "5 Days",
+    // "2 Day",
+    // "3 Days",
+    // "5 Days",
   ];
 
   int getDistanceForTime(String duration) {

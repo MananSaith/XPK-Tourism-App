@@ -12,13 +12,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
   int currentIndex = 0;
 
   final List<Widget> children = [
-     HomeScreen(),
+    HomeScreen(),
     const Placeholder(), // For You screen (to be implemented)
-    const NewBlogScreen(),
+    NewBlogScreen(),
     const SavedScreen(),
     const ProfileScreen(),
-
-
   ];
 
   void onTabTapped(int index) {

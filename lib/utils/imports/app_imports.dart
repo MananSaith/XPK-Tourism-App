@@ -14,6 +14,9 @@ export 'package:xpk/config/server/maps_services.dart';
 export 'package:xpk/app_module/home_screen/widgets/search_buttom_sheet.dart';
 export 'package:xpk/app_module/home_screen/widgets/place_card.dart';
 export 'package:xpk/config/server/seeting_app.dart';
+export 'package:xpk/app_module/detail_screen/view/detail_screen.dart';
+export 'package:xpk/app_module/detail_screen/controller/detail_place_controller.dart';
+export 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 export 'package:fluttertoast/fluttertoast.dart';
 export 'package:xpk/utils/padding/app_borader_radius.dart';
@@ -45,8 +48,7 @@ export 'package:xpk/widegts/toast/snackbar_custom.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:firebase_storage/firebase_storage.dart';
 export 'package:firebase_core/firebase_core.dart';
-export 'package:xpk/firebase_options.dart';
-export 'package:xpk/app_module/new_blog_screen/widgets/input_section.dart';
+export 'package:xpk/utils/fireBase_option/firebase_options.dart';
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%% scren exports %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 export 'package:xpk/app_module/auth/views/forgetpasswordscreen.dart';
@@ -57,8 +59,8 @@ export 'package:xpk/app_module/auth/views/signup_screen.dart';
 export 'package:xpk/app_module/splash/splash_screen.dart';
 export 'package:xpk/app_module/bottom_navigation/navbar_item.dart';
 export 'package:xpk/app_module/saved_screen/saved_screen.dart';
-export 'package:xpk/app_module/new_blog_screen/new_blog_screen.dart';
-export 'package:xpk/app_module/profile_screen/profile_screen.dart';
+export 'package:xpk/app_module/new_blog_screen/view/new_blog_screen.dart';
+export 'package:xpk/app_module/profile_screen/view/profile_screen.dart';
 export 'package:xpk/app_module/new_blog_screen/widgets/image_upload_section.dart';
 
 export 'package:xpk/app_module/bottom_navigation/navigation_screen.dart';

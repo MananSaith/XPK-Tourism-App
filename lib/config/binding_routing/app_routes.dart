@@ -27,6 +27,8 @@ class AppRoutes {
   static const signupEmailOtpVerify = '/signupEmailOtpVerify';
   static const forgetPasswordScreen = '/ForgetPasswordScreen';
   static const navigateScreen = '/navigateScreen';
+  static const detailScreen = '/detailScreen';
+
 
 
 }

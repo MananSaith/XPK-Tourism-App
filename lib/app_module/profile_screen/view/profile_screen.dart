@@ -17,33 +17,11 @@ class ProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const ProfileHeader(),
-                const Center(
-                  child: Text(
-                    '"I can draw my life by myself"',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 16,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
+                ProfileHeader(),
                 const ProfileGallery(),
               ],
             ),
           ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        elevation: 0,
-        onPressed: () {},
-        backgroundColor: AppColors.primaryAppBar,
-        shape: const CircleBorder(),
-        child: Icon(
-          Icons.add,
-          color: AppColors.mutedElements,
-          size: 35,
         ),
       ),
     );

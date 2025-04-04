@@ -18,13 +18,14 @@ class NewBlogScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Create New Blog',
-          style: TextStyle(color: AppColors.whiteBar),
+          style: TextStyle(color: AppColors.bgDark),
         ),
-        backgroundColor: AppColors.primaryAppBar,
+        backgroundColor: AppColors.scaffoldBackground,
       ),
       body: Container(
-        decoration:
-            BoxDecoration(gradient: AppColors.scafoldBackGroundGrandient),
+        decoration: BoxDecoration(
+            //gradient: AppColors.scafoldBackGroundGrandient
+            ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Form(
@@ -40,7 +41,9 @@ class NewBlogScreen extends StatelessWidget {
                   controller: controller.placeNameController,
                   hint: 'Enter place name',
                   validator: (val) =>
-                      val == null || val.trim().isEmpty ? 'Required' : null,
+                      val == null || val.length < 10 || val.trim().isEmpty
+                          ? 'Required'
+                          : null,
                 ),
                 const SizedBox(height: 10),
                 _buildTextField(
@@ -48,7 +51,7 @@ class NewBlogScreen extends StatelessWidget {
                   controller: controller.placeDescriptionController,
                   hint: 'Describe the place (min 255 characters)',
                   maxLines: 6,
-                  validator: (val) => val == null || val.length < 255
+                  validator: (val) => val == null || val.length < 50
                       ? 'Minimum 255 characters required'
                       : null,
                 ),
@@ -70,7 +73,9 @@ class NewBlogScreen extends StatelessWidget {
                   controller: controller.hotelNameController,
                   hint: 'Enter hotel name',
                   validator: (val) =>
-                      val == null || val.trim().isEmpty ? 'Required' : null,
+                      val == null || val.length < 6 || val.trim().isEmpty
+                          ? 'Required'
+                          : null,
                 ),
                 const SizedBox(height: 10),
                 _buildTextField(
@@ -79,7 +84,9 @@ class NewBlogScreen extends StatelessWidget {
                   hint: 'Describe your stay at the hotel',
                   maxLines: 4,
                   validator: (val) =>
-                      val == null || val.trim().isEmpty ? 'Required' : null,
+                      val == null || val.length < 20 || val.trim().isEmpty
+                          ? 'Required'
+                          : null,
                 ),
 
                 const SizedBox(height: 20),
@@ -92,7 +99,9 @@ class NewBlogScreen extends StatelessWidget {
                   controller: controller.restaurantNameController,
                   hint: 'Enter restaurant name',
                   validator: (val) =>
-                      val == null || val.trim().isEmpty ? 'Required' : null,
+                      val == null || val.length < 6 || val.trim().isEmpty
+                          ? 'Required'
+                          : null,
                 ),
                 const SizedBox(height: 10),
                 _buildTextField(
@@ -101,7 +110,9 @@ class NewBlogScreen extends StatelessWidget {
                   hint: 'Describe your dining experience',
                   maxLines: 4,
                   validator: (val) =>
-                      val == null || val.trim().isEmpty ? 'Required' : null,
+                      val == null || val.length < 10 || val.trim().isEmpty
+                          ? 'Required'
+                          : null,
                 ),
 
                 const SizedBox(height: 20),
@@ -143,17 +154,6 @@ class NewBlogScreen extends StatelessWidget {
                   ),
                 ),
 
-                // LocationPicker(
-                //   onLocationSelected: controller.setLocation,
-                // ),
-
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => FullScreenMapSearch());
-                  },
-                  child: Text("location"),
-                ),
-
                 const SizedBox(height: 30),
 
                 // Submit Button
@@ -162,7 +162,8 @@ class NewBlogScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // controller.uploadBlog(); // implement inside controller
+                        controller
+                            .uploadBlogToFirestore(); // implement inside controller
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -201,7 +202,7 @@ class NewBlogScreen extends StatelessWidget {
             child: Text(
               number.toString(),
               style: const TextStyle(
-                color: AppColors.whiteBar,
+                color: AppColors.bgDark,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -211,7 +212,7 @@ class NewBlogScreen extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            color: AppColors.whiteBar,
+            color: AppColors.bgDark,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -230,18 +231,18 @@ class NewBlogScreen extends StatelessWidget {
     return TextFormField(
       controller: controller,
       maxLines: maxLines,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.black),
       validator: validator,
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        hintStyle: const TextStyle(color: Colors.white70),
-        labelStyle: const TextStyle(color: Colors.white),
+        hintStyle: TextStyle(color: AppColors.gray),
+        labelStyle: TextStyle(color: AppColors.gray),
         filled: true,
         fillColor: Colors.white12,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.white),
+          borderSide: const BorderSide(color: Colors.amber),
           borderRadius: BorderRadius.circular(8),
         ),
       ),

@@ -19,22 +19,7 @@ class AuthController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   var check = false.obs;
-  // void login() async {
-  //   check(true);
-  //   debugPrint(
-  //       "Trying to login with Email: ${email.value}, Password: ${newPassword.value}");
 
-  //   try {
-  //     await _auth.signInWithEmailAndPassword(
-  //       email: email.value.trim(),
-  //       password: newPassword.value.trim(),
-  //     );
-  //     check(false);
-  //   } catch (e) {
-  //     check(false);
-  //     Get.snackbar("Error", "Invalid email or password.");
-  //   }
-  // }
 
   void login() async {
     check(true);
@@ -62,26 +47,6 @@ class AuthController extends GetxController {
       Get.snackbar("Error", "Invalid email or password.");
     }
   }
-
-  // Future<void> signup() async {
-  //   check(true);
-  //   try {
-  //     UserCredential userCredential =
-  //         await _auth.createUserWithEmailAndPassword(
-  //       email: email.value,
-  //       password: newPassword.value,
-  //     );
-  //     await userCredential.user?.sendEmailVerification();
-  //     User user = userCredential.user!;
-  //     await UploadImage();
-  //     _saveUserToFirestore(user);
-  //     check(false);
-  //   } catch (e) {
-  //     check(false);
-  //     Get.snackbar("Error", e.toString());
-  //   }
-  //   check(false);
-  // }
 
   Future<void> signup() async {
   check(true);

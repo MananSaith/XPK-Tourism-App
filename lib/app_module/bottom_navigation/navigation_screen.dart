@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:xpk/app_module/for_you/view/for_you_screen.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -13,9 +14,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   final List<Widget> children = [
     HomeScreen(),
-    const Placeholder(), // For You screen (to be implemented)
+    const BlogListScreen(), // For You screen (to be implemented)
     NewBlogScreen(),
-    const SavedScreen(),
+    //const SavedScreen(),
     const ProfileScreen(),
   ];
 
@@ -69,17 +70,17 @@ class _NavigationScreenState extends State<NavigationScreen> {
                     currentIndex: currentIndex,
                     onTap: onTabTapped,
                   ),
-                  BottomNavItem(
-                    icon: CupertinoIcons.bookmark,
-                    label: 'Saved',
-                    index: 3,
-                    currentIndex: currentIndex,
-                    onTap: onTabTapped,
-                  ),
+                  // BottomNavItem(
+                  //   icon: CupertinoIcons.bookmark,
+                  //   label: 'Saved',
+                  //   index: 3,
+                  //   currentIndex: currentIndex,
+                  //   onTap: onTabTapped,
+                  // ),
                   BottomNavItem(
                     icon: CupertinoIcons.person,
                     label: 'Profile',
-                    index: 4,
+                    index: 3,
                     currentIndex: currentIndex,
                     onTap: onTabTapped,
                   ),

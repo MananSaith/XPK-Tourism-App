@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
+import '../../../utils/imports/app_imports.dart';
 
 class NewBlogController extends GetxController {
   // Text controllers
@@ -13,14 +12,11 @@ class NewBlogController extends GetxController {
   final restaurantDescriptionController = TextEditingController();
   final feedbackController = TextEditingController();
   final LocationController = TextEditingController();
-   String destinationLat = "";
-   String destinationLng = "";
-
-  // Image picker
+  String destinationLat = "";
+  String destinationLng = "";
   List<XFile> selectedImages = <XFile>[].obs;
-
-  // Location
-  Rx<LatLng?> selectedLocation = Rx<LatLng?>(null);
+  // Rx<LatLng?> selectedLocation = Rx<LatLng?>(null);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Method to pick multiple images
   Future<void> pickImages() async {
@@ -28,14 +24,65 @@ class NewBlogController extends GetxController {
     if (pickedFiles.isNotEmpty) {
       selectedImages.clear();
       selectedImages.addAll(pickedFiles.map((x) => XFile(x.path)));
-      update(); // notify UI
+      update();
     }
   }
 
-  // Set location from map
-  void setLocation(LatLng location) {
-    selectedLocation.value = location;
-    update();
+  Future<void> uploadBlogToFirestore() async {
+    if (selectedImages.isEmpty || LocationController.text.isEmpty) {
+      Get.snackbar(
+          "Error", "Please select location and upload at least one image");
+      return;
+    }
+
+    try {
+      // Show loading
+      Get.dialog( Center(child:customLoader(AppColors.primaryAppBar)),
+          barrierDismissible: false);
+
+      // Upload images to Firebase Storage
+      List<String> imageUrls = [];
+
+      for (var image in selectedImages) {
+        String fileName =
+            'users/${"blog_images"}-${_auth.currentUser!.uid}/${DateTime.now().millisecondsSinceEpoch}_${image.name}';
+        final ref = FirebaseStorage.instance.ref().child(fileName);
+
+        final uploadTask = await ref.putFile(File(image.path));
+        final url = await uploadTask.ref.getDownloadURL();
+        imageUrls.add(url);
+      }
+
+      // Create blog data
+      final blogData = {
+        "uid": _auth.currentUser!.uid,
+        "placeName": placeNameController.text.trim(),
+        "placeDescription": placeDescriptionController.text.trim(),
+        "hotelName": hotelNameController.text.trim(),
+        "hotelDescription": hotelDescriptionController.text.trim(),
+        "restaurantName": restaurantNameController.text.trim(),
+        "restaurantDescription": restaurantDescriptionController.text.trim(),
+        "feedback": feedbackController.text.trim(),
+        "location": {
+          "lat": destinationLat,
+          "lng": destinationLng,
+          "address": LocationController.text.trim(),
+        },
+        "images": imageUrls,
+        "createdAt": FieldValue.serverTimestamp(),
+      };
+
+      // Save to Firestore
+      await FirebaseFirestore.instance.collection("blogs").add(blogData);
+
+      // Success
+      Get.back(); // Close loading dialog
+      Get.snackbar("Success", "Blog uploaded successfully");
+      clearForm();
+    } catch (e) {
+      Get.back(); // Close loading dialog
+      Get.snackbar("Error", e.toString());
+    }
   }
 
   // Clear everything (optional)
@@ -48,7 +95,10 @@ class NewBlogController extends GetxController {
     restaurantDescriptionController.clear();
     feedbackController.clear();
     selectedImages.clear();
-    selectedLocation.value = null;
+    LocationController.clear();
+    destinationLat = "";
+    destinationLng = "";
+
     update();
   }
 

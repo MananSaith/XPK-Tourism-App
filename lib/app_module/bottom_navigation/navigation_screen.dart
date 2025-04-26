@@ -16,7 +16,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     HomeScreen(),
     const BlogListScreen(), // For You screen (to be implemented)
     NewBlogScreen(),
-    //const SavedScreen(),
+     SaveScreen(),
     const ProfileScreen(),
   ];
 
@@ -70,17 +70,17 @@ class _NavigationScreenState extends State<NavigationScreen> {
                     currentIndex: currentIndex,
                     onTap: onTabTapped,
                   ),
-                  // BottomNavItem(
-                  //   icon: CupertinoIcons.bookmark,
-                  //   label: 'Saved',
-                  //   index: 3,
-                  //   currentIndex: currentIndex,
-                  //   onTap: onTabTapped,
-                  // ),
+                  BottomNavItem(
+                    icon: CupertinoIcons.bookmark,
+                    label: 'Saved',
+                    index: 3,
+                    currentIndex: currentIndex,
+                    onTap: onTabTapped,
+                  ),
                   BottomNavItem(
                     icon: CupertinoIcons.person,
                     label: 'Profile',
-                    index: 3,
+                    index: 4,
                     currentIndex: currentIndex,
                     onTap: onTabTapped,
                   ),

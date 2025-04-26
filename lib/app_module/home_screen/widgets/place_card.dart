@@ -2,14 +2,20 @@ import 'package:get/get.dart';
 import 'package:xpk/app_module/home_screen/model/text_search_place_model.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 
+import '../../../config/server/save_nosql_data.dart';
+import '../../saved_screen/controller/save_controller.dart';
+
 class PlaceCard extends StatelessWidget {
   final TextSearchPlaceModel place;
   final controller = Get.find<DetailPlaceController>();
+  final saveController = Get.find<SaveController>();
+
 
   PlaceCard({Key? key, required this.place}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final globalId = place.placeId;
     return InkWell(
       onTap: () async {
         if (controller.isPageLoad.value == false) {
@@ -90,13 +96,46 @@ class PlaceCard extends StatelessWidget {
                   // Rating
                   if (place.rating != null)
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.star,
-                            color: Colors.amber.shade600, size: 22),
-                        const SizedBox(width: 6),
-                        Text('${place.rating}',
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Row(
+                          children: [
+                            Icon(Icons.star,
+                                color: Colors.amber.shade600, size: 22),
+                            const SizedBox(width: 6),
+                            Text('${place.rating}',
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+
+
+                        Text("${place.placeId ?? 'Unknown'}"),
+
+                        IconButton(
+
+                          icon: Obx(() {
+                            if (saveController.isGoogleListLoading.value) {
+                              return const Icon(Icons.hourglass_empty, color: Colors.grey);
+                            }
+
+                            return Icon(
+                              saveController.plusCodeGoogleList.contains(globalId)
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_border,
+                              color: Colors.redAccent,
+                            );
+                          }),
+
+                          onPressed: globalId == null
+                              ? null // Disable if globalCode is null
+                              : () async {
+                            await SavePlace.instance.togglePlusCodeGooglePlace(globalId,place);
+                            saveController.readGooglePlusCode();
+                          },
+                        )
+
+
                       ],
                     ),
 
@@ -152,25 +191,25 @@ class PlaceCard extends StatelessWidget {
                       ],
                     ),
 
-                  const SizedBox(height: 8),
+                 // const SizedBox(height: 8),
 
-                  // Place Types (Categories)
-                  if (place.types != null && place.types!.isNotEmpty)
-                    Wrap(
-                      spacing: 6,
-                      children: place.types!
-                          .map((type) => Chip(
-                                label: Text(type,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold)),
-                                backgroundColor: Colors.blue.shade100,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ))
-                          .toList(),
-                    ),
+                  // // Place Types (Categories)
+                  // if (place.types != null && place.types!.isNotEmpty)
+                  //   Wrap(
+                  //     spacing: 6,
+                  //     children: place.types!
+                  //         .map((type) => Chip(
+                  //               label: Text(type,
+                  //                   style: const TextStyle(
+                  //                       fontSize: 12,
+                  //                       fontWeight: FontWeight.bold)),
+                  //               backgroundColor: Colors.blue.shade100,
+                  //               shape: RoundedRectangleBorder(
+                  //                 borderRadius: BorderRadius.circular(8),
+                  //               ),
+                  //             ))
+                  //         .toList(),
+                  //   ),
                 ],
               ),
             ),

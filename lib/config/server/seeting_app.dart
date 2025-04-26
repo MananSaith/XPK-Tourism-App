@@ -8,6 +8,7 @@ Future<Position?> getCurrentLocation() async {
   try {
     // Step 1: Check if GPS is enabled
     bool isGPSEnabled = await Geolocator.isLocationServiceEnabled();
+
     if (!isGPSEnabled) {
       print('⚠ GPS is OFF. Asking user to turn it ON...');
 

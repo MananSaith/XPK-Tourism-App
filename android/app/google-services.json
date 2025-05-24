@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "229364030800",
+    "project_id": "xpk-tour",
+    "storage_bucket": "xpk-tour.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229364030800:android:266b0634987df3499f6055",
+        "android_client_info": {
+          "package_name": "com.manansaith.xpktour"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkUIdpF97zMfYnX35QOOW3c0uJsoQu8js"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

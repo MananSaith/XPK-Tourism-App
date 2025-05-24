@@ -1,4 +1,4 @@
-package com.example.xpk
+package com.manansaith.xpktour
 
 import io.flutter.embedding.android.FlutterActivity
 

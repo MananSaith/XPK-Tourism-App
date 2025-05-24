@@ -1,4 +1,7 @@
 
+import 'dart:convert';
+
+//import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import '../../../utils/imports/app_imports.dart';
 
@@ -27,33 +30,107 @@ class NewBlogController extends GetxController {
       update();
     }
   }
-
+  // Future<void> uploadBlogToFirestore() async {
+  //   if (selectedImages.isEmpty || LocationController.text.isEmpty) {
+  //     Get.snackbar("Error", "Please select location and upload at least one image");
+  //     return;
+  //   }
+  //
+  //   try {
+  //     Get.dialog(
+  //       Center(child: customLoader(AppColors.primaryAppBar)),
+  //       barrierDismissible: false,
+  //     );
+  //
+  //     List<String> imageUrls = [];
+  //
+  //     for (var image in selectedImages) {
+  //       try {
+  //
+  //         Uint8List? bytes = await image.readAsBytes();
+  //         String base64String = base64Encode(bytes);
+  //         String url = base64String;
+  //         imageUrls.add(url);
+  //       } catch (imgError) {
+  //         Get.snackbar("Image Upload Error", imgError.toString());
+  //         Get.back(); // Close loading
+  //         return;
+  //       }
+  //     }
+  //
+  //     final blogData = {
+  //       "uid": _auth.currentUser!.uid,
+  //       "placeName": placeNameController.text.trim(),
+  //       "placeDescription": placeDescriptionController.text.trim(),
+  //       "hotelName": hotelNameController.text.trim(),
+  //       "hotelDescription": hotelDescriptionController.text.trim(),
+  //       "restaurantName": restaurantNameController.text.trim(),
+  //       "restaurantDescription": restaurantDescriptionController.text.trim(),
+  //       "feedback": feedbackController.text.trim(),
+  //       "location": {
+  //         "lat": destinationLat,
+  //         "lng": destinationLng,
+  //         "address": LocationController.text.trim(),
+  //       },
+  //       "images": imageUrls,
+  //       "createdAt": FieldValue.serverTimestamp(),
+  //     };
+  //
+  //     await FirebaseFirestore.instance.collection("blogs").add(blogData);
+  //
+  //     Get.to(NavigationScreen(index: 4,)); // Close loading
+  //     Get.snackbar("Success", "Blog uploaded successfully");
+  //     clearForm();
+  //   } catch (e) {
+  //     print("0000000000000000000 ${e.toString()}");
+  //     Get.back(); // Close loading
+  //     Get.snackbar("Upload Error", e.toString());
+  //   }
+  // }
   Future<void> uploadBlogToFirestore() async {
     if (selectedImages.isEmpty || LocationController.text.isEmpty) {
-      Get.snackbar(
-          "Error", "Please select location and upload at least one image");
+      Get.snackbar("Error", "Please select location and upload at least one image");
       return;
     }
 
     try {
-      // Show loading
-      Get.dialog( Center(child:customLoader(AppColors.primaryAppBar)),
-          barrierDismissible: false);
+      Get.dialog(
+        Center(child: customLoader(AppColors.primaryAppBar)),
+        barrierDismissible: false,
+      );
 
-      // Upload images to Firebase Storage
       List<String> imageUrls = [];
 
       for (var image in selectedImages) {
-        String fileName =
-            'users/${"blog_images"}-${_auth.currentUser!.uid}/${DateTime.now().millisecondsSinceEpoch}_${image.name}';
-        final ref = FirebaseStorage.instance.ref().child(fileName);
+        try {
+          // Compress image
+          // final compressedBytes = await FlutterImageCompress.compressWithFile(
+          //   image.path,
+          //   minWidth: 800,
+          //   minHeight: 800,
+          //   quality: 60, // 0-100 (lower = more compressed)
+          //   format: CompressFormat.jpeg,
+          // );
+          print("Original: ${File(image.path).lengthSync() / 1024} KB");
+         // print("Compressed: ${compressedBytes!.length / 1024} KB");
 
-        final uploadTask = await ref.putFile(File(image.path));
-        final url = await uploadTask.ref.getDownloadURL();
-        imageUrls.add(url);
+          // if (compressedBytes == null) {
+          //   throw Exception("Image compression failed");
+          // }
+
+          // Convert to base64 (NOT RECOMMENDED FOR FIRESTORE) — use only if you *must*
+          String base64String = base64Encode([1,2]);
+          imageUrls.add(base64String);
+
+          // ✅ Better: Upload compressedBytes to Firebase Storage instead and get download URL
+
+        } catch (imgError) {
+          Get.snackbar("Image Upload Error", imgError.toString());
+          Get.back();
+          return;
+        }
       }
 
-      // Create blog data
       final blogData = {
         "uid": _auth.currentUser!.uid,
         "placeName": placeNameController.text.trim(),
@@ -72,20 +149,24 @@ class NewBlogController extends GetxController {
         "createdAt": FieldValue.serverTimestamp(),
       };
 
-      // Save to Firestore
       await FirebaseFirestore.instance.collection("blogs").add(blogData);
+      // 👇 Close loading dialog first
+      Get.back();
 
-      // Success
-      Get.back(); // Close loading dialog
+// 👇 Now navigate
+      Get.to(NavigationScreen(index: 4));
+
+// 👇 Show success snackbar
       Get.snackbar("Success", "Blog uploaded successfully");
       clearForm();
+
+      clearForm();
     } catch (e) {
-      Get.back(); // Close loading dialog
-      Get.snackbar("Error", e.toString());
+      print("Upload Error: ${e.toString()}");
+      Get.back();
+      Get.snackbar("Upload Error", e.toString());
     }
   }
-
-  // Clear everything (optional)
   void clearForm() {
     placeNameController.clear();
     placeDescriptionController.clear();

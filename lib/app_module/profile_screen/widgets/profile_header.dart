@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:get/get.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
+
+import '../../../widegts/cache_image/app_cache_image.dart';
 
 class ProfileHeader extends StatelessWidget {
   ProfileHeader({Key? key}) : super(key: key);
@@ -49,7 +54,7 @@ class ProfileHeader extends StatelessWidget {
             }
 
             final userData = snapshot.data!.data() as Map<String, dynamic>;
-
+print("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy ${userData['profileImageUrl']}");
             return Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -100,9 +105,14 @@ class ProfileHeader extends StatelessWidget {
                             ),
                             child: CircleAvatar(
                               radius: 50,
-                              backgroundImage: NetworkImage(
-                                userData['profileImageUrl'] ??
-                                    'https://via.placeholder.com/150', // fallback image
+                              backgroundColor: Colors.grey.shade300,
+                              child: ClipOval(
+                                child: Image.memory(
+                                  base64Decode(userData['profileImageUrl']),
+                                  fit: BoxFit.cover,
+                                  width: 100,
+                                  height: 100,
+                                ),
                               ),
                             ),
                           ),
@@ -124,6 +134,7 @@ class ProfileHeader extends StatelessWidget {
                           ),
                         ],
                       ),
+
                       const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

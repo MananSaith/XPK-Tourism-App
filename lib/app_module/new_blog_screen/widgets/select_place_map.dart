@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -210,6 +211,12 @@ class _FullScreenMapSearchState extends State<FullScreenMapSearch> {
                     "Lat: ${_selectedLatLng.latitude}, Lng: ${_selectedLatLng.longitude}",
                     style: TextStyle(fontSize: 14),
                   ),
+                  SizedBox(height: 8),
+                  Center(
+                    child: IconButton(onPressed: ()=>Get.back(), icon: Icon(CupertinoIcons.check_mark,
+                      size: 20,
+                      color: CupertinoColors.activeGreen,)),
+                  )
                 ],
               ),
             ),

@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:xpk/app_module/deatil_blog/view/detail_blog_screen.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../../widegts/cache_image/app_cache_image.dart';
 
 class ProfileGallery extends StatelessWidget {
   const ProfileGallery({Key? key}) : super(key: key);
@@ -57,10 +61,10 @@ class ProfileGallery extends StatelessWidget {
               // Ensure the image URL is not null or empty
               final imageUrl = blog["images"]?.isNotEmpty == true
                   ? blog["images"][0]
-                  : ''; // Default to empty if no images
+                  : '';
 
               return ClipRRect(
-                borderRadius: BorderRadius.circular(12), // Apply radius
+                borderRadius: BorderRadius.circular(30), // Apply radius
                 child: InkWell(
                   onTap: () {
                     Get.to(() => BlogDetailScreen(
@@ -72,14 +76,19 @@ class ProfileGallery extends StatelessWidget {
                     _showDeleteDialog(context, blogId);
                   },
                   child: imageUrl.isNotEmpty
-                      ? CachedNetworkImage(
-                          imageUrl: imageUrl,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        )
+                      ?
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    clipBehavior: Clip.hardEdge, // Important to apply radius to child
+                    child: Image.memory(
+                      base64Decode(imageUrl),
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+                    ),
+                  )
+
                       : const Icon(Icons
                           .image_not_supported), // Handle empty or broken image URL
                 ),

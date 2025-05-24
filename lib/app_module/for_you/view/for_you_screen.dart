@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:xpk/app_module/deatil_blog/view/detail_blog_screen.dart';
@@ -93,29 +95,20 @@ class BlogListScreen extends StatelessWidget {
                         children: [
                           if (firstImage != null)
                             ClipRRect(
-                              // borderRadius: const BorderRadius.vertical(
-                              //     top: Radius.circular(16)),
-                              child: CachedNetworkImage(
-                                imageUrl: firstImage,
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.memory(
+                                base64Decode(firstImage),
                                 height: 200,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
-                                placeholder: (context, url) => Container(
-                                  height: 200,
-                                  color: AppColors.scaffoldBackground,
-                                  child: Center(
-                                    child:
-                                        customLoader(AppColors.primaryAppBar),
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) => Container(
+                                errorBuilder: (context, error, stackTrace) => Container(
                                   height: 200,
                                   color: Colors.grey.shade200,
-                                  child:
-                                      const Icon(Icons.broken_image, size: 40),
+                                  child: const Icon(Icons.broken_image, size: 40),
                                 ),
                               ),
                             ),
+
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Column(
@@ -140,15 +133,22 @@ class BlogListScreen extends StatelessWidget {
                                     CircleAvatar(
                                       radius: 18,
                                       backgroundColor: Colors.grey.shade300,
-                                      backgroundImage: userPhoto != null
-                                          ? CachedNetworkImageProvider(
-                                              userPhoto)
-                                          : null,
-                                      child: userPhoto == null
-                                          ? const Icon(Icons.person,
-                                              color: Colors.white)
-                                          : null,
+                                      child: ClipOval(
+                                        child: Image.memory(
+                                          base64Decode(userPhoto),
+                                          width: 36, // same as 2 * radius
+                                          height: 36,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) => Container(
+                                            width: 36,
+                                            height: 36,
+                                            color: Colors.grey.shade200,
+                                            child: const Icon(Icons.broken_image),
+                                          ),
+                                        ),
+                                      ),
                                     ),
+
                                     const SizedBox(width: 10),
                                     Column(
                                       crossAxisAlignment:

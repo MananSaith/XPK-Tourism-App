@@ -26,7 +26,7 @@ class AccessoriesController extends GetxController {
 
       print(
           "====finding radius 3000 ==== lat $origanLat  long $origanLng=== type $access");
-      data = await MapsService().nearestPlaces(
+      data = await MapsService().nearestPlacesAccessories(
           latitude: origanLat,
           longitude: origanLng,
           type: access,

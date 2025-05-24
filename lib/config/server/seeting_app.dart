@@ -1,6 +1,8 @@
 // Get current location
 import 'package:geolocator/geolocator.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:get/get.dart';
 
 Future<Position?> getCurrentLocation() async {
 
@@ -66,3 +68,59 @@ Future<bool> internetConnectivity() async {
   }
   return false;
 }
+
+
+
+Future<bool> requestMediaPermission() async {
+  PermissionStatus status = await Permission.photos.request();
+
+  if (status.isGranted) {
+    print("Permission granted");
+    return true;
+  } else if (status.isPermanentlyDenied) {
+    // Show dialog to go to settings
+    await Get.dialog(
+      AlertDialog(
+        title: Text("Permission Required"),
+        content: Text("Please enable media permission from settings to upload images."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              openAppSettings(); // Take user to app settings
+              Get.back(); // Close dialog
+            },
+            child: Text("Open Settings"),
+          ),
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text("Cancel"),
+          ),
+        ],
+      ),
+    );
+    return false;
+  } else {
+    // Show dialog to retry permission
+    await Get.dialog(
+      AlertDialog(
+        title: Text("Permission Required"),
+        content: Text("We need media permission to upload your image."),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              Get.back();
+              await requestMediaPermission(); // Retry permission
+            },
+            child: Text("Retry"),
+          ),
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text("Cancel"),
+          ),
+        ],
+      ),
+    );
+    return false;
+  }
+}
+

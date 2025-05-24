@@ -5,6 +5,8 @@ import 'package:xpk/app_module/new_blog_screen/widgets/image_upload_section.dart
 import 'package:xpk/app_module/new_blog_screen/widgets/select_place_map.dart';
 import 'package:xpk/utils/app_color/app_color.dart';
 
+import '../../../config/server/seeting_app.dart';
+
 class NewBlogScreen extends StatelessWidget {
   NewBlogScreen({super.key});
 
@@ -133,14 +135,14 @@ class NewBlogScreen extends StatelessWidget {
                     child: TextFormField(
                       controller: controller.LocationController,
                       readOnly: true,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.black),
                       validator: (val) =>
                           val == null || val.trim().isEmpty ? 'Required' : null,
                       decoration: InputDecoration(
                         labelText: "Search",
                         hintText: "Search place...",
-                        hintStyle: const TextStyle(color: Colors.white70),
-                        labelStyle: const TextStyle(color: Colors.white),
+                        hintStyle: const TextStyle(color:  AppColors.gray),
+                        labelStyle: const TextStyle(color:  AppColors.gray),
                         filled: true,
                         fillColor: Colors.white12,
                         border: OutlineInputBorder(
@@ -155,372 +157,17 @@ class NewBlogScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 30),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
-
                 // Submit Button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async{
                       if (_formKey.currentState!.validate()) {
-                        controller
-                            .uploadBlogToFirestore(); // implement inside controller
+                        if(await requestMediaPermission()){
+                          controller
+                              .uploadBlogToFirestore();
+                      }
+                         // implement inside controller
                       }
                     },
                     style: ElevatedButton.styleFrom(

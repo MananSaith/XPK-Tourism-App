@@ -72,10 +72,10 @@ class HomeController extends GetxController {
 
       if (searchController.text.isNotEmpty) {
         data = await MapsService().nearestPlaces(
-            query: searchController.text,
+           // query: searchController.text,
             latitude: position.latitude,
             longitude: position.longitude,
-            type: this.type.value,
+            //type: this.type.value,
             radius: radius);
       } else {
         print(
@@ -83,7 +83,7 @@ class HomeController extends GetxController {
         data = await MapsService().nearestPlaces(
             latitude: position.latitude,
             longitude: position.longitude,
-            type: this.type.value,
+           // type: this.type.value,
             radius: radius);
       }
 
@@ -184,21 +184,21 @@ class HomeController extends GetxController {
   int getDistanceForTime(String duration) {
     switch (duration) {
       case "2 Hours":
-        return 5000; // 5 km for 2 hours
+        return 5000;
       case "4 Hours":
-        return 8000; // 8 km for 4 hours
+        return 8000;
       case "6 Hours":
-        return 12000; // 12 km for 6 hours
+        return 12000;
       case "8 Hours":
-        return 16000; // 16 km for 8 hours
-      case "2 Day":
-        return 50000; // 50 km for 2 days
-      case "3 Days":
-        return 80000; // 80 km for 3 days
-      case "5 Days":
-        return 120000; // 120 km for 5 days
+        return 16000;
+      // case "2 Day":
+      //   return 50000;
+      // case "3 Days":
+      //   return 80000;
+      // case "5 Days":
+      //   return 120000;
       default:
-        return 0; // "NA" or unknown values return 0 km
+        return 0;
     }
   }
 }

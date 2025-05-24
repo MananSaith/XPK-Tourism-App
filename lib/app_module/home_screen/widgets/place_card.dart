@@ -110,7 +110,7 @@ class PlaceCard extends StatelessWidget {
                         ),
 
 
-                        Text("${place.placeId ?? 'Unknown'}"),
+                       
 
                         IconButton(
 

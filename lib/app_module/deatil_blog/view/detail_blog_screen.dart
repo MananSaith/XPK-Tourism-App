@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -61,11 +63,6 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
     final String restaurantDescription =
         blog['restaurantDescription'] ?? "No description available.";
     final String feedback = blog['feedback'] ?? "No feedback available.";
-    // final String userName = user["username"] ?? "Anonymous";
-    // final String? userPhoto = user["profileImageUrl"];
-    // final Timestamp? createdAt = blog["createdAt"];
-    // final String formattedDate =
-    //     createdAt != null ? DateFormat.yMMMMd().format(createdAt.toDate()) : "";
 
     return Scaffold(
       appBar: AppBar(
@@ -99,15 +96,15 @@ class _BlogDetailScreenState extends State<BlogDetailScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: CachedNetworkImage(
-                          imageUrl: images[index],
+                        child: Image.memory(
+                          base64Decode(images[index]) ,
                           fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
+
+                          errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.broken_image),
                         ),
-                      ),
+                      )
+
                     );
                   },
                 ),

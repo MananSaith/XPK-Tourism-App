@@ -4,6 +4,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 
 class MapsService {
+
+
   Future<List<Map<String, dynamic>>> textSearchPlaces({
     String? query,
     String? city = "pakistan",
@@ -56,8 +58,73 @@ class MapsService {
       return [];
     }
   }
-
   Future<List<Map<String, dynamic>>> nearestPlaces({
+    required double latitude,
+    required double longitude,
+    int radius = 3000,
+  }) async {
+    bool isInternet = await internetConnectivity();
+    if (!isInternet) {
+      print("Internet Unstable");
+      appToastView(title: "Unstable Internet");
+      return [];
+    }
+
+    const String apiKey = ApiConstant.googleApikey;
+
+    // 🎯 Multi-type keywords with OR logic
+    String keywords = "tourist attraction OR park OR zoo OR museum OR art gallery OR amusement park";
+
+    String url = "${ApiConstant.nearestBaseUrl}"
+        "?location=$latitude,$longitude"
+        "&radius=$radius"
+        "&keyword=${Uri.encodeComponent(keywords)}"
+        "&key=$apiKey";
+
+    debugPrint("🎯 NEAREST TOURISM URL: $url");
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final results = List<Map<String, dynamic>>.from(data['results'] ?? []);
+
+        debugPrint("✅ Raw Results: ${results.length}");
+
+        // 🛑 Only allow these types
+        final allowedTypes = [
+          'tourist_attraction',
+          'museum',
+          'park',
+          'zoo',
+          'art_gallery',
+          'amusement_park',
+        ];
+
+        final filteredResults = results.where((place) {
+          final types = List<String>.from(place['types'] ?? []);
+          final hasPlaceId = place.containsKey('place_id');
+          final isRelevant = types.any((type) => allowedTypes.contains(type));
+          final hasImage = place.containsKey('photos') && (place['photos'] as List).isNotEmpty;
+
+          return hasPlaceId && isRelevant && hasImage;
+        }).toList();
+
+        debugPrint("✅ Filtered Places Found: ${filteredResults.length}");
+
+        return filteredResults;
+      } else {
+        print("❌ Error: ${response.statusCode} - ${response.body}");
+        return [];
+      }
+    } catch (e) {
+      print("❌ Exception: $e");
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> nearestPlacesAccessories({
     required double latitude, // Required Latitude
     required double longitude, // Required Longitude
     int radius = 3000, // Default radius in meters

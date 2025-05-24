@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
+
+import '../widget/dialogbox.dart';
 
 class AuthController extends GetxController {
   RxString newPassword = "".obs;
@@ -49,6 +54,10 @@ class AuthController extends GetxController {
   }
 
   Future<void> signup() async {
+   if(!(await  requestMediaPermission())){
+     return;
+   }
+
   check(true);
   try {
     UserCredential userCredential =
@@ -56,13 +65,20 @@ class AuthController extends GetxController {
       email: email.value.trim(),
       password: newPassword.value.trim(),
     );
-
     await userCredential.user?.sendEmailVerification();
+print("111111111111111111111111111111111111");
     User user = userCredential.user!;
+    print("22222222222222222222222222222222222");
+
     await UploadImage();
-    _saveUserToFirestore(user);
-    
+    print("333333333333333333333333333333333");
+
+    await _saveUserToFirestore(user);
+    print("4444444444444444444444444444444444444444444444");
+
+
     check(false);
+    showEmailVerificationDialog(email.value.trim());
     Get.snackbar("Success", "Account created! Please verify your email.");
   } on FirebaseAuthException catch (e) {
     check(false);
@@ -87,6 +103,7 @@ class AuthController extends GetxController {
     check(false);
     Get.snackbar("Error", "An unexpected error occurred.");
   }
+  check(false);
 }
 
 
@@ -100,7 +117,7 @@ class AuthController extends GetxController {
     }
   }
 
-  void _saveUserToFirestore(User user) async {
+  Future<void> _saveUserToFirestore(User user) async {
     await _firestore.collection('users').doc(user.uid).set({
       'username': userName.value,
       'email': user.email,
@@ -112,27 +129,19 @@ class AuthController extends GetxController {
       "createdAt": FieldValue.serverTimestamp(),
     });
   }
-
   Future<void> UploadImage() async {
-    if (image.value == null) {
-      Get.snackbar("Error", "No image selected!");
-      return;
-    }
-
-    String fileName =
-        'users/${userName.value}-${_auth.currentUser!.uid}/${DateTime.now().millisecondsSinceEpoch}.jpg';
-    Reference ref = _storage.ref().child(fileName);
-
     try {
-      File? imageFile = image.value; // Access the value safely
-      await ref.putFile(imageFile!); // Ensure it's not null
-      String downloadUrl = await ref.getDownloadURL();
+      File? imageFile = image.value;
+      Uint8List? bytes = await imageFile?.readAsBytes();
+      String base64String = base64Encode(bytes!);
+      String downloadUrl = base64String;
+
       profileImageUrl.value = downloadUrl;
     } catch (e) {
-      Get.snackbar("Error", e.toString());
+      print("Image upload failed: ${e.toString()}");
+      throw Exception("Image upload failed: ${e.toString()}");
     }
   }
-
   void resetPassword() async {
     if (email.value.isEmpty) {
       Get.snackbar("Error", "Please enter your email address.");

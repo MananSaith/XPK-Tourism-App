@@ -233,29 +233,7 @@ class SignupScreen extends StatelessWidget {
                                         controller.birthday.value.isNotEmpty &&
                                         controller.image.value != null) {
                                       await controller.signup();
-                                      showCustomDialog(
-                                        title: MyText.verifyEmailTitle,
-                                        content: controller.email.value +
-                                            " " +
-                                            MyText.verifyEmailContent,
-                                        actions: [
-                                          CustomElevatedButton(
-                                            text: "ok",
-                                            onPressed: () {
-                                              Get.offAllNamed(AppRoutes.login);
-                                            },
-                                            height: 35.h,
-                                            width: 70.w,
-                                            borderRadius: 50,
-                                            fontSize: Responsive.fontSize(
-                                                context, 12.sp),
-                                            // gradient: AppColors.buttonGradian,
-                                            backgroundColor:
-                                                AppColors.secondaryButton,
-                                          ),
-                                        ],
-                                      );
-                                      // Get.toNamed(AppRoutes.login);
+
                                     } else {
                                       showCustomSnackBar(
                                         title: 'Failed',

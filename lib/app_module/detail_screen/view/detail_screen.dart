@@ -16,64 +16,68 @@ class DetailScreen extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: AppColors.scafoldBackGroundGrandient,
         ),
-        child: Column(
-          children: [
-            Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    //expandedHeight: 300.h,
-                    leading: IconButton(
+        child: Obx(() {
+          if (controller.detailPlaceList.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final place = controller.detailPlaceList[0];
+
+          return Column(
+            children: [
+              Expanded(
+                child: CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                      leading: IconButton(
                         onPressed: () => Get.back(),
                         icon: Icon(
                           CupertinoIcons.back,
                           color: AppColors.white,
-                        )),
-                    title: AppText(
-                      text: controller.detailPlaceList[0].name!,
-                      size: 15.sp,
-                      color: AppColors.white,
-                      fontWeight: FontWeights.bold,
+                        ),
+                      ),
+                      title: AppText(
+                        text: place.name ?? 'Unknown Place',
+                        size: 15.sp,
+                        color: AppColors.white,
+                        fontWeight: FontWeights.bold,
+                      ),
+                      pinned: true,
+                      backgroundColor: AppColors.primaryAppBar,
                     ),
-                    pinned: true,
-                    backgroundColor: AppColors.primaryAppBar,
-                  ),
-                  SliverToBoxAdapter(
-                    child: AutoScrollImageSlider(
-                      photoReferences: controller.detailPlaceList[0].photos!
-                          .map((photo) => photo.photoReference!)
-                          .toList(),
-                      controllerPage: controller.controllerPage,
+                    SliverToBoxAdapter(
+                      child: AutoScrollImageSlider(
+                        photoReferences: place.photos
+                            ?.map((photo) => photo.photoReference ?? '')
+                            .where((ref) => ref.isNotEmpty)
+                            .toList() ??
+                            [],
+                        controllerPage: controller.controllerPage,
+                      ),
                     ),
-                  ),
-                  AddressRatingWidget(
-                    address: controller.detailPlaceList[0].formattedAddress!,
-                    rating: controller.detailPlaceList[0].rating!,
-                    totalRating:
-                        controller.detailPlaceList[0].userRatingsTotal!,
-                    reviews: [
-                      ...controller.detailPlaceList[0].reviews!,
-                    ],
-                  ),
-                  Accessories(
-                    origanLat:
-                        controller.detailPlaceList[0].geometry!.location!.lat!,
-                    origanLng:
-                        controller.detailPlaceList[0].geometry!.location!.lng!,
-                  ),
-                  NavigateButtonWidget(
-                    destinationLat:
-                        controller.detailPlaceList[0].geometry!.location!.lat!,
-                    destinationLng:
-                        controller.detailPlaceList[0].geometry!.location!.lng!,
-                    name: controller.detailPlaceList[0].name!,
-                  )
-                ],
+                    AddressRatingWidget(
+                      address: place.formattedAddress ?? "No Address",
+                      rating: place.rating ?? 0.0,
+                      totalRating: place.userRatingsTotal ?? 0,
+                      reviews: place.reviews ?? [],
+                    ),
+                    Accessories(
+                      origanLat: place.geometry?.location?.lat ?? 0.0,
+                      origanLng: place.geometry?.location?.lng ?? 0.0,
+                    ),
+                    NavigateButtonWidget(
+                      destinationLat: place.geometry?.location?.lat ?? 0.0,
+                      destinationLng: place.geometry?.location?.lng ?? 0.0,
+                      name: place.name ?? "Unknown",
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          );
+        }),
       ),
     );
   }
+
 }

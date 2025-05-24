@@ -3,20 +3,27 @@ import 'package:xpk/app_module/for_you/view/for_you_screen.dart';
 import 'package:xpk/utils/imports/app_imports.dart';
 
 class NavigationScreen extends StatefulWidget {
-  const NavigationScreen({super.key});
+  final int? index; // Optional index
+
+  const NavigationScreen({super.key, this.index});
 
   @override
   State<NavigationScreen> createState() => _NavigationScreenState();
 }
-
 class _NavigationScreenState extends State<NavigationScreen> {
-  int currentIndex = 0;
+  late int currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.index ?? 0; // Default to 0 if null
+  }
 
   final List<Widget> children = [
     HomeScreen(),
-    const BlogListScreen(), // For You screen (to be implemented)
+    const BlogListScreen(),
     NewBlogScreen(),
-     SaveScreen(),
+    SaveScreen(),
     const ProfileScreen(),
   ];
 

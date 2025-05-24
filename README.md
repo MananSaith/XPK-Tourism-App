@@ -1,85 +1,102 @@
-# 🇵🇰 XPK – Explore Pakistan
+# 🌍 XPK – Explore Pakistan Tourism App
 
-**XPK (Explore Pakistan)** is a Flutter-based mobile application that helps users explore the beauty, culture, and hidden gems of Pakistan. Whether you're looking for historical landmarks, scenic spots, or trendy restaurants — XPK provides personalized recommendations based on your location and time availability.
-
----
-
-## 📱 Features
-
-- Discover tourist spots in cities like **Lahore**, **Karachi**, and **Murree**
-- Filter places based on available time (e.g., 2 hours, 1 day, 3 days)
-- Upload and explore **vlogs/blogs** from travelers
-- **Turn on GPS** to get real-time nearby suggestions
-- Smooth, user-friendly interface inspired by modern tourism trends
+Welcome to **XPK (Explore Pakistan)** – a complete Flutter-based mobile application that helps users explore popular tourist destinations in Pakistan with an intuitive and interactive experience.
 
 ---
 
-## 📸 Screenshots
+## 📱 App Overview
 
-> Here’s a preview of the XPK app experience:
-
-![About App](document/material/images/about-app.jpg)
-![Delete Post](document/material/images/del-post.jpg)
-![Detail Screen](document/material/images/detail-screen.jpg)
-![Home with Filters](document/material/images/home-filter.jpg)
-![Home](document/material/images/home.jpg)
-![Image Feed](document/material/images/IMG-20250511-WA0011.jpg)
-![Navigation](document/material/images/navigation.jpg)
-![Post Blog](document/material/images/post-blog.jpg)
-![Profile](document/material/images/profile.jpg)
-![Restaurant](document/material/images/restaurent.jpg)
-![Reviews](document/material/images/reviews.jpg)
-![Saved Post](document/material/images/save-post.jpg)
+**XPK** allows users to:
+- Discover beautiful places across Pakistan
+- Post and read travel blogs
+- Filter locations by interest
+- Explore reviews, restaurants, and more
+- Save posts and manage profiles
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Built With
 
-| Tool      | Version       |
-|-----------|---------------|
-| Flutter   | 3.27.2        |
-| Dart      | 3.6.1         |
-| DevTools  | 2.40.2        |
-| Engine    | e672b006cb    |
-| Channel   | Stable        |
-| Release   | 68415ad1d9 (2025-01-13) |
+| Tool            | Version     |
+|-----------------|-------------|
+| **Flutter**     | 3.27.2      |
+| **Dart**        | 3.6.1       |
+| **DevTools**    | 2.40.2      |
+| **Firebase**    | Auth, Firestore, Storage, Realtime Database |
+
+> Flutter Version Output:
+> ```
+> Flutter 3.27.2 • channel stable • https://github.com/flutter/flutter.git
+> Framework • revision 68415ad1d9 (4 months ago) • 2025-01-13 10:22:03 -0800
+> Engine • revision e672b006cb
+> Tools • Dart 3.6.1 • DevTools 2.40.2
+> ```
 
 ---
 
 ## 🎨 UI/UX Design
 
-> Full prototype and design screens are available on Figma:
-
-🔗 [Figma Design – XPK](https://www.figma.com/design/kh2oypbo4jYNFDIddQtgcl/Xpk?node-id=0-1&p=f&t=7b54m1vESsON7eqK-0)
-
----
-
-## 📄 Documentation
-
-This repository includes complete documentation of the project:
-
-- ✅ Project Proposal
-- ✅ Software Requirements Specification (SRS)
-- ✅ System Design & Architecture
-- ✅ UI/UX Prototypes
-- ✅ Final Presentation Slides
-- ✅ Final Project Report
-
-> All files are available in the `/documentation` folder.
+The complete UI prototype is available on **Figma**:  
+🔗 [Figma Design Link](https://www.figma.com/design/kh2oypbo4jYNFDIddQtgcl/Xpk?node-id=0-1&p=f&t=7b54m1vESsON7eqK-0)
 
 ---
 
-## 🙋‍♂️ About Me
+## 📂 Documentation
 
-This project is developed by **Manan Saith**, a passionate Flutter developer from Pakistan 🇵🇰.  
-Currently building real-world mobile solutions that empower users and showcase the best of technology and tourism.
+All documentation related to this project is included:
+
+- 📑 **Proposal**
+- 📝 **SRS (Software Requirements Specification)**
+- 🛠️ **System Design & Architecture**
+- 🎨 **Prototype**
+- 📊 **Presentation Slides**
+- 📘 **Final Report**
+
+> Files are placed inside the `/documents` folder.
 
 ---
 
-## 📝 How to Add/Update Screenshots
+## 📸 App Screenshots
 
-1. Place your screenshot images in `document/material/images/`.
-2. Use the Markdown format to insert them:
+<div align="center">
 
-```markdown
-![Image Title](document/material/images/your_image_name.jpg)
+<img src="document/material/images/about-app.jpg" width="30%" alt="About App"/>
+<img src="document/material/images/del-post.jpg" width="30%" alt="Delete Post"/>
+<img src="document/material/images/detail-screen.jpg" width="30%" alt="Detail Screen"/>
+
+<br/>
+
+<img src="document/material/images/home-filter.jpg" width="30%" alt="Home Filter"/>
+<img src="document/material/images/home.jpg" width="30%" alt="Home"/>
+<img src="document/material/images/IMG-20250511-WA0011.jpg" width="30%" alt="Image Feed"/>
+
+<br/>
+
+<img src="document/material/images/navigation.jpg" width="30%" alt="Navigation"/>
+<img src="document/material/images/post-blog.jpg" width="30%" alt="Post Blog"/>
+<img src="document/material/images/profile.jpg" width="30%" alt="Profile"/>
+
+<br/>
+
+<img src="document/material/images/restaurent.jpg" width="30%" alt="Restaurant"/>
+<img src="document/material/images/reviews.jpg" width="30%" alt="Reviews"/>
+<img src="document/material/images/save-post.jpg" width="30%" alt="Saved Post"/>
+
+</div>
+
+---
+
+## 👨‍💻 Developed By
+
+**Manan Saith**  
+Junior Flutter Developer  
+Aylvah Software Company  
+GitHub: [MananSaith](https://github.com/MananSaith)
+
+---
+
+## 📬 Contact
+
+If you have any feedback or queries, feel free to reach out.
+
+---
